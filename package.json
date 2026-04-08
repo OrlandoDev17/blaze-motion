@@ -1,0 +1,12 @@
+{
+  "name": "blaze-motion-monorepo",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "bun --filter @blaze-motion/web dev",
+    "build:web": "bun --filter @blaze-motion/web build",
+    "build:motion": "bun --filter @blaze/motion build"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@blaze/motion": ["./packages/motion/src/index.ts"]
+    }
+  }
+}
