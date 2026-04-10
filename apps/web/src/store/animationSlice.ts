@@ -8,7 +8,7 @@ const initialState = {
   easing: "easeOut",
   stiffness: 100,
   damping: 14,
-  stagger: {
+  staggerDelay: {
     enabled: false,
     count: 3,
     value: 0.15,
@@ -41,13 +41,13 @@ const animationSlice = createSlice({
       state.damping = action.payload;
     },
     setStaggerEnabled: (state, action: PayloadAction<boolean>) => {
-      state.stagger.enabled = action.payload;
+      state.staggerDelay.enabled = action.payload;
     },
     setStaggerCount: (state, action: PayloadAction<number>) => {
-      state.stagger.count = action.payload;
+      state.staggerDelay.count = action.payload;
     },
     setStagger: (state, action: PayloadAction<number>) => {
-      state.stagger.value = action.payload;
+      state.staggerDelay.value = action.payload;
     },
   },
 });

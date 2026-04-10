@@ -127,7 +127,8 @@ export const SLIDER_PROPERTIES = {
   damping: {
     id: "damping",
     label: "Damping",
-    description: "Amortiguación. Controla cuántos rebotes hace antes de detenerse.",
+    description:
+      "Amortiguación. Controla cuántos rebotes hace antes de detenerse.",
     example: "5 = mucho rebote, 25 = sin rebote",
     min: 1,
     max: 30,
@@ -140,7 +141,7 @@ export const SLIDER_PROPERTIES = {
     description: "Número de elementos que se animarán en secuencia.",
     example: "3 = 3 cards",
     min: 2,
-    max: 10,
+    max: 6,
     step: 1,
     unit: "",
   },

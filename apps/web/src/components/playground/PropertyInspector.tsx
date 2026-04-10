@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -146,13 +147,20 @@ export function PropertyInspector() {
   const easing = useSelector((state: RootState) => state.animation.easing);
   const distance = useSelector((state: RootState) => state.animation.distance);
   const delay = useSelector((state: RootState) => state.animation.delay);
-  const stiffness = useSelector((state: RootState) => state.animation.stiffness);
-  const dampingValue = useSelector((state: RootState) => state.animation.damping);
-  const stagger = useSelector((state: RootState) => state.animation.stagger);
+  const stiffness = useSelector(
+    (state: RootState) => state.animation.stiffness,
+  );
+  const dampingValue = useSelector(
+    (state: RootState) => state.animation.damping,
+  );
+  const staggerDelay = useSelector(
+    (state: RootState) => state.animation.staggerDelay,
+  );
 
   const [showCustomEasing, setShowCustomEasing] = useState(false);
 
-  const isXAxis = animationType === "fade-left" || animationType === "fade-right";
+  const isXAxis =
+    animationType === "fade-left" || animationType === "fade-right";
 
   const handleEasingChange = (value: string) => {
     dispatch(setEasing(value));
@@ -244,7 +252,7 @@ export function PropertyInspector() {
 
         <StaggerToggle
           label="Stagger"
-          enabled={stagger.enabled}
+          enabled={staggerDelay.enabled}
           onToggle={(enabled) => dispatch(setStaggerEnabled(enabled))}
         >
           <div className="flex flex-col gap-4 pt-2">
@@ -252,7 +260,7 @@ export function PropertyInspector() {
               label={SLIDER_PROPERTIES.staggerCount.label}
               description={SLIDER_PROPERTIES.staggerCount.description}
               example={SLIDER_PROPERTIES.staggerCount.example}
-              value={stagger.count}
+              value={staggerDelay.count}
               min={SLIDER_PROPERTIES.staggerCount.min}
               max={SLIDER_PROPERTIES.staggerCount.max}
               step={SLIDER_PROPERTIES.staggerCount.step}
@@ -263,7 +271,7 @@ export function PropertyInspector() {
               label={SLIDER_PROPERTIES.stagger.label}
               description={SLIDER_PROPERTIES.stagger.description}
               example={SLIDER_PROPERTIES.stagger.example}
-              value={stagger.value}
+              value={staggerDelay.value}
               min={SLIDER_PROPERTIES.stagger.min}
               max={SLIDER_PROPERTIES.stagger.max}
               step={SLIDER_PROPERTIES.stagger.step}

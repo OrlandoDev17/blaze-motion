@@ -13,6 +13,7 @@ interface FadeOptions {
   ease?: Easing | Easing[];
   spring?: Omit<SpringOptions, "keyframes">;
   viewportOnce?: boolean;
+  isStaggerChild?: boolean;
 }
 
 export const fade = ({
@@ -23,6 +24,7 @@ export const fade = ({
   ease = [0.16, 1, 0.3, 1] as const,
   spring,
   viewportOnce = true,
+  isStaggerChild = false,
 }: FadeOptions = {}): Variants => {
   const directions = {
     up: { y: distance, x: 0 },
@@ -40,21 +42,12 @@ export const fade = ({
     initial: {
       opacity: 0,
       ...directions[direction],
-      viewport: {
-        once: viewportOnce,
-      },
     },
     animate: {
       opacity: 1,
       x: 0,
       y: 0,
-      transition,
-    },
-    visible: {
-      opacity: 1,
-      x: 0,
-      y: 0,
-      transition,
+      transition: isStaggerChild ? {} : transition,
     },
   } as unknown as Variants;
 };

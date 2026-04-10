@@ -1,30 +1,19 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable react-hooks/refs */
 "use client";
 
-import { useState, useEffect, useMemo, useRef } from "react";
-import { motion, AnimatePresence, Easing, Variants } from "motion/react";
+import { useState, useEffect, useRef } from "react";
+import {
+  motion,
+  AnimatePresence,
+  Easing,
+  Variants,
+  stagger,
+} from "motion/react";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/store";
 import { fade } from "@blaze/motion";
 import { Play } from "lucide-react";
-
-function CardSkeleton() {
-  return (
-    <div className="flex flex-col gap-8 max-w-xs w-full bg-neutral card-shadow rounded-2xl overflow-hidden">
-      <div className="w-full h-48 bg-linear-to-br from-slate-800 to-slate-900 animate-pulse" />
-      <div className="flex flex-col gap-6 px-6">
-        <div className="w-2/5 h-2.5 bg-slate-800 rounded animate-pulse" />
-        <div className="flex flex-col gap-2">
-          <div className="w-full h-8 bg-slate-800/50 rounded-lg animate-pulse" />
-          <div className="w-4/5 h-8 bg-slate-800/50 rounded-lg animate-pulse" />
-        </div>
-      </div>
-      <footer className="flex px-6 pb-6">
-        <div className="w-2/4 h-10 bg-linear-to-r from-slate-800 to-slate-700 rounded animate-pulse" />
-      </footer>
-    </div>
-  );
-}
 
 function CardContent({ isSmall = false }: { isSmall?: boolean }) {
   return (
@@ -57,7 +46,7 @@ export function PlaygroundElement() {
     distance,
     stiffness,
     damping: dampingValue,
-    stagger,
+    staggerDelay,
   } = settings;
 
   const [animationKey, setAnimationKey] = useState(0);
@@ -118,52 +107,32 @@ export function PlaygroundElement() {
   const direction = directionMap[type] || "up";
   const easeValue = easingMap[easing] || "easeOut";
 
-  const cardVariants: Variants = useMemo(() => {
-    if (isCustomSpring) {
-      return fade({
-        direction,
-        distance,
-        spring: { stiffness, damping: dampingValue },
-      });
-    }
-    return fade({
-      direction,
-      distance,
-      duration,
-      ease: easeValue,
-    });
-  }, [
-    direction,
-    distance,
-    duration,
-    easeValue,
-    isCustomSpring,
-    stiffness,
-    dampingValue,
-  ]);
-
-  const staggerContainerVariants: Variants = useMemo(
-    () => ({
-      hidden: { opacity: 0 },
-      visible: {
-        opacity: 1,
-        transition: {
-          staggerChildren: stagger.value,
-        },
+  const parentVariants: Variants = {
+    initial: { opacity: 0 },
+    animate: {
+      opacity: 1,
+      transition: {
+        delayChildren: stagger(staggerDelay?.value),
+        staggerChildren: staggerDelay?.value,
       },
-    }),
-    [stagger.value],
-  );
+    },
+  };
 
-  if (!isMounted.current) {
-    return (
-      <div className="flex flex-col items-center gap-12">
-        <div className="flex items-center justify-center min-h-[400px]">
-          <CardSkeleton />
-        </div>
-      </div>
-    );
-  }
+  const childVariants: Variants = {
+    initial: {
+      opacity: 0,
+      y: type === "fade-up" ? distance : type === "fade-down" ? -distance : 0,
+      x:
+        type === "fade-left" ? distance : type === "fade-right" ? -distance : 0,
+    },
+    animate: {
+      opacity: 1,
+      y: 0,
+      x: 0,
+      // La duración se puede poner aquí, pero NUNCA un delay
+      transition: { duration: duration },
+    },
+  };
 
   return (
     <div className="flex flex-col items-center gap-12">
@@ -177,37 +146,28 @@ export function PlaygroundElement() {
 
       <div className="relative min-h-[400px] flex items-center justify-center">
         <AnimatePresence mode="wait">
-          {isReady &&
-            (stagger.enabled ? (
-              <motion.div
-                key={animationKey}
-                initial="hidden"
-                animate="visible"
-                exit="hidden"
-                variants={staggerContainerVariants}
-                className="flex flex-wrap justify-center gap-4 max-w-3xl"
-              >
-                {Array.from({ length: stagger.count }, (_, i) => (
-                  <motion.div
-                    key={`${animationKey}-${i}`}
-                    variants={cardVariants}
-                    initial="initial"
-                    animate="animate"
-                  >
+          {isReady && (
+            <motion.div
+              key={`container-${animationKey}`}
+              variants={parentVariants}
+              initial="initial"
+              animate="animate"
+              className={`gap-4 max-w-3xl ${staggerDelay?.enabled ? "grid grid-cols-3" : "flex items-center"}`}
+            >
+              {staggerDelay?.enabled ? (
+                Array.from({ length: staggerDelay.count }).map((_, i) => (
+                  <motion.div key={`card-${i}`} variants={childVariants}>
                     <CardContent isSmall={true} />
                   </motion.div>
-                ))}
-              </motion.div>
-            ) : (
-              <motion.div
-                key={animationKey}
-                variants={cardVariants}
-                initial="initial"
-                animate="animate"
-              >
-                <CardContent />
-              </motion.div>
-            ))}
+                ))
+              ) : (
+                // Una sola card
+                <motion.div variants={childVariants}>
+                  <CardContent />
+                </motion.div>
+              )}
+            </motion.div>
+          )}
         </AnimatePresence>
 
         {!isReady && (
@@ -219,9 +179,9 @@ export function PlaygroundElement() {
         )}
       </div>
 
-      {stagger.enabled && (
+      {staggerDelay?.enabled && (
         <p className="text-white/40 text-xs font-mono">
-          {stagger.count} cards con stagger de {stagger.value}s
+          {staggerDelay?.count} cards con stagger de {staggerDelay?.value}s
         </p>
       )}
     </div>
