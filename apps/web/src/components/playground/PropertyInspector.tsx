@@ -23,6 +23,14 @@ import {
 } from "@/store/animationSlice";
 import { useState } from "react";
 
+// =============================================================================
+// Componentes internos
+// =============================================================================
+
+/**
+ * Sección de Timing: muestra duration o spring (stiffness/damping)
+ * según el easing seleccionado.
+ */
 function TimingSection({
   easing,
   stiffness,
@@ -81,6 +89,9 @@ function TimingSection({
   );
 }
 
+/**
+ * Sección colapsable para configurar spring (stiffness + damping).
+ */
 function CustomEasingSection({
   stiffness,
   damping,
@@ -141,26 +152,35 @@ function CustomEasingSection({
   );
 }
 
+// =============================================================================
+// Componente principal
+// =============================================================================
+
 export function PropertyInspector() {
   const dispatch = useDispatch();
+
+  // ==========================================================================
+  // Selectores: obtienen los valores actuales del store
+  // ==========================================================================
+
   const animationType = useSelector((state: RootState) => state.animation.type);
   const easing = useSelector((state: RootState) => state.animation.easing);
   const distance = useSelector((state: RootState) => state.animation.distance);
   const delay = useSelector((state: RootState) => state.animation.delay);
-  const stiffness = useSelector(
-    (state: RootState) => state.animation.stiffness,
-  );
-  const dampingValue = useSelector(
-    (state: RootState) => state.animation.damping,
-  );
-  const staggerDelay = useSelector(
-    (state: RootState) => state.animation.staggerDelay,
-  );
+  const stiffness = useSelector((state: RootState) => state.animation.stiffness);
+  const dampingValue = useSelector((state: RootState) => state.animation.damping);
+
+  // Configuración de stagger (delay entre hijos)
+  const staggerDelay = useSelector((state: RootState) => state.animation.staggerDelay);
 
   const [showCustomEasing, setShowCustomEasing] = useState(false);
 
-  const isXAxis =
-    animationType === "fade-left" || animationType === "fade-right";
+  // ==========================================================================
+  // Utilidades
+  // ==========================================================================
+
+  // Determina si la animación es en eje X (left/right) para mostrar "Distance X"
+  const isXAxis = animationType === "fade-left" || animationType === "fade-right";
 
   const handleEasingChange = (value: string) => {
     dispatch(setEasing(value));
@@ -171,6 +191,10 @@ export function PropertyInspector() {
     }
   };
 
+  // ==========================================================================
+  // Render
+  // ==========================================================================
+
   return (
     <aside className="w-md 2xl:w-lg bg-neutral flex flex-col h-full border-l border-selective-yellow-600/30 shrink-0 shadow-lg">
       <header className="flex items-center justify-between border-b border-slate-600/30 px-6 py-6">
@@ -178,6 +202,7 @@ export function PropertyInspector() {
       </header>
 
       <section className="flex-1 flex flex-col gap-6 px-6 py-6 overflow-y-auto">
+        {/* Selector de tipo de animación (fade-up, fade-down, etc.) y easing */}
         <div className="grid grid-cols-2 gap-6 2xl:gap-12">
           {SELECTABLE_PROPERTIES.map((property) => {
             const selected = property.id === "type" ? animationType : easing;
@@ -201,6 +226,7 @@ export function PropertyInspector() {
         </div>
 
         <div className="flex flex-col gap-5">
+          {/* Sección Timing: duration (o spring settings si easing = custom) */}
           <div className="flex flex-col gap-4">
             <h3 className="text-sm font-semibold text-white/60 uppercase tracking-wider">
               Timing
@@ -213,7 +239,12 @@ export function PropertyInspector() {
             />
           </div>
 
-          {easing !== "custom" && (
+          {/*
+            Delay: solo se muestra cuando NO hay stagger activo.
+            Cuando stagger está habilitado, el delay se maneja automáticamente
+            via delayChildren y staggerChildren, así que no tiene sentido mostrarlo.
+          */}
+          {easing !== "custom" && !staggerDelay.enabled && (
             <Slider
               label={SLIDER_PROPERTIES.delay.label}
               description={SLIDER_PROPERTIES.delay.description}
@@ -227,6 +258,7 @@ export function PropertyInspector() {
             />
           )}
 
+          {/* Distance: desplazamiento inicial antes de la animación */}
           <Slider
             label={isXAxis ? "Distance X" : "Distance Y"}
             description={SLIDER_PROPERTIES.distance.description}
@@ -240,6 +272,7 @@ export function PropertyInspector() {
           />
         </div>
 
+        {/* Sección Spring Settings: colapsable, solo si easing = custom */}
         {easing === "custom" && (
           <CustomEasingSection
             stiffness={stiffness}
@@ -250,6 +283,12 @@ export function PropertyInspector() {
           />
         )}
 
+        {/*
+          Stagger: permite animar múltiples elementos con delay escalonado.
+          - enabled: toggle para activar/desactivar
+          - count: número de elementos a animar
+          - value: delay entre cada elemento
+        */}
         <StaggerToggle
           label="Stagger"
           enabled={staggerDelay.enabled}
