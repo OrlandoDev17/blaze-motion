@@ -10,6 +10,7 @@ import {
 import { fade } from "@blaze/motion";
 import { Play } from "lucide-react";
 import { CardContent } from "./CardContent";
+import { CodePreview } from "./CodePreview";
 
 interface AnimationSettings {
   type: string;
@@ -201,6 +202,9 @@ export function PlaygroundAnimation({ settings }: PlaygroundAnimationProps) {
           {staggerDelay?.count} cards con stagger de {staggerDelay?.value}s
         </p>
       )}
+
+      {/* Bloque de código para copiar */}
+      <CodePreview settings={settings} />
     </div>
   );
 }
