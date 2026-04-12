@@ -167,11 +167,17 @@ export function PropertyInspector() {
   const easing = useSelector((state: RootState) => state.animation.easing);
   const distance = useSelector((state: RootState) => state.animation.distance);
   const delay = useSelector((state: RootState) => state.animation.delay);
-  const stiffness = useSelector((state: RootState) => state.animation.stiffness);
-  const dampingValue = useSelector((state: RootState) => state.animation.damping);
+  const stiffness = useSelector(
+    (state: RootState) => state.animation.stiffness,
+  );
+  const dampingValue = useSelector(
+    (state: RootState) => state.animation.damping,
+  );
 
   // Configuración de stagger (delay entre hijos)
-  const staggerDelay = useSelector((state: RootState) => state.animation.staggerDelay);
+  const staggerDelay = useSelector(
+    (state: RootState) => state.animation.staggerDelay,
+  );
 
   const [showCustomEasing, setShowCustomEasing] = useState(false);
 
@@ -180,7 +186,8 @@ export function PropertyInspector() {
   // ==========================================================================
 
   // Determina si la animación es en eje X (left/right) para mostrar "Distance X"
-  const isXAxis = animationType === "fade-left" || animationType === "fade-right";
+  const isXAxis =
+    animationType === "fade-left" || animationType === "fade-right";
 
   const handleEasingChange = (value: string) => {
     dispatch(setEasing(value));

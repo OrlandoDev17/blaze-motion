@@ -1,6 +1,7 @@
 import { NAV_LINKS } from "@/lib/constants";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion, stagger } from "motion/react";
 import { useState } from "react";
+import { fade } from "@blaze/motion";
 
 export function Header() {
   const [hoveredTab, setHoveredTab] = useState<string | null>("#playground");
@@ -10,16 +11,43 @@ export function Header() {
     setActiveTab(href);
   };
 
+  const parentVariants = {
+    initial: { opacity: 1 },
+    animate: { opacity: 1, transition: { delayChildren: stagger(0.4) } },
+  };
+
   return (
-    <header className="flex items-center justify-between px-8 bg-header h-16">
+    <motion.header
+      variants={parentVariants}
+      initial="initial"
+      animate="animate"
+      className="flex items-center justify-between px-8 bg-header h-16"
+    >
       <div className="flex-1">
-        <h2 className="text-radical-red-300 text-2xl font-semibold tracking-wide">
+        <motion.h2
+          variants={fade({
+            direction: "right",
+            distance: 20,
+            ease: "backOut",
+            excludeDelay: true,
+          })}
+          className="text-radical-red-300 text-2xl font-semibold tracking-wide"
+        >
           BlazeMotion
-        </h2>
+        </motion.h2>
       </div>
-      <ul className="flex items-center gap-4">
+      <motion.ul variants={parentVariants} className="flex items-center gap-4">
         {NAV_LINKS.map(({ id, label, href }) => (
-          <li className="relative" key={id}>
+          <motion.li
+            variants={fade({
+              direction: "down",
+              distance: 20,
+              ease: "backOut",
+              excludeDelay: true,
+            })}
+            className="relative"
+            key={id}
+          >
             <a
               onMouseEnter={() => setHoveredTab(href)}
               onMouseLeave={() => setHoveredTab(null)}
@@ -45,17 +73,25 @@ export function Header() {
                 )}
               </AnimatePresence>
             </a>
-          </li>
+          </motion.li>
         ))}
-      </ul>
-      <div className="flex-1 flex items-center justify-end">
+      </motion.ul>
+      <motion.div
+        variants={fade({
+          direction: "left",
+          distance: 20,
+          ease: "backOut",
+          delay: 1.5,
+        })}
+        className="flex-1 flex items-center justify-end"
+      >
         <a
           className="font-jetbrains-mono font-medium bg-neutral px-4 py-2 rounded-md shadow-inner shadow-white/10 hover:shadow-inner hover:shadow-white/30 hover:-translate-y-1 transition-all duration-300"
           href="https://github.com/OrlandoDev17/blaze-motion"
         >
           Github
         </a>
-      </div>
-    </header>
+      </motion.div>
+    </motion.header>
   );
 }

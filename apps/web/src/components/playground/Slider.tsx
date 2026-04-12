@@ -107,6 +107,22 @@ export function Slider({
     }
   };
 
+  const handleThumbKeyDown = (e: React.KeyboardEvent) => {
+    const stepMultiplier = e.shiftKey ? 10 : 1;
+    if (e.key === "ArrowRight" || e.key === "ArrowUp") {
+      e.preventDefault();
+      const newValue = Math.min(max, value + step * stepMultiplier);
+      onChange(formatValue(newValue));
+    } else if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
+      e.preventDefault();
+      const newValue = Math.max(min, value - step * stepMultiplier);
+      onChange(formatValue(newValue));
+    }
+  };
+
+  const prefersReducedMotion = typeof window !== "undefined" && 
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
   return (
     <div className="flex flex-col gap-2 w-full">
       <div className="flex items-center justify-between">
@@ -133,6 +149,14 @@ export function Slider({
               setIsEditing(true);
               setInputValue(String(value));
             }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                setIsEditing(true);
+                setInputValue(String(value));
+              }
+            }}
+            aria-label={`Edit ${label} value`}
           >
             {formatValue(value)}
             {unit && <span className="text-neutral-500 ml-0.5">{unit}</span>}
