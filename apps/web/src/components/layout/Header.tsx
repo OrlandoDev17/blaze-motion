@@ -1,7 +1,7 @@
 import { NAV_LINKS } from "@/lib/constants";
 import { AnimatePresence, motion, stagger } from "motion/react";
 import { useState } from "react";
-import { fade } from "@blaze/motion";
+import { fade } from "@blaze-motion/motion";
 
 export function Header() {
   const [hoveredTab, setHoveredTab] = useState<string | null>("#playground");

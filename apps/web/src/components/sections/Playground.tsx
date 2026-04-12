@@ -4,7 +4,7 @@ import { PlaygroundElement } from "@/components/playground/PlaygroundElement";
 import { PropertyInspector } from "@/components/playground/PropertyInspector";
 import { ParticlesBackground } from "@/components/playground/ParticlesBackground";
 import { motion } from "motion/react";
-import { fade } from "@blaze/motion";
+import { fade } from "@blaze-motion/motion";
 
 export function Playground() {
   return (

@@ -32,24 +32,24 @@ interface CodePreviewProps {
 
 const C = {
   component: "text-yellow-400", // motion.div
-  var: "text-yellow-400",      // parentVariants, childVariants
-  prop: "text-orange-400",     // variants
-  assign: "text-blue-400",     // =
-  propName: "text-red-400",    // direction, initial, opacity, ease
-  value: "text-yellow-300",     // números
-  string: "text-green-400",    // "valor"
-  keyword: "text-purple-400",   // const, fade
-  stagger: "text-purple-400",   // stagger()
-  comment: "text-white/30",    // {/* */}
+  var: "text-yellow-400", // parentVariants, childVariants
+  prop: "text-orange-400", // variants
+  assign: "text-blue-400", // =
+  propName: "text-red-400", // direction, initial, opacity, ease
+  value: "text-yellow-300", // números
+  string: "text-green-400", // "valor"
+  keyword: "text-purple-400", // const, fade
+  stagger: "text-purple-400", // stagger()
+  comment: "text-white/30", // {/* */}
 };
 
 // Colores de llaves por nivel de anidación
 const braceColors = [
-  "text-cyan-400",    // nivel 0: { }
-  "text-purple-400",  // nivel 1: { }
-  "text-green-400",   // nivel 2: { }
+  "text-cyan-400", // nivel 0: { }
+  "text-purple-400", // nivel 1: { }
+  "text-green-400", // nivel 2: { }
   "text-orange-400", // nivel 3: { }
-  "text-pink-400",   // nivel 4: { }
+  "text-pink-400", // nivel 4: { }
 ];
 
 const getBraceColor = (depth: number) =>
@@ -57,8 +57,8 @@ const getBraceColor = (depth: number) =>
 
 // Helper para crear llaves con color según profundidad
 const B = (depth: number) => ({
-  open: <span className={getBraceColor(depth)}>{'{'}</span>,
-  close: <span className={getBraceColor(depth)}>{'}'}</span>,
+  open: <span className={getBraceColor(depth)}>{"{"}</span>,
+  close: <span className={getBraceColor(depth)}>{"}"}</span>,
 });
 
 // Helper para crear spans
@@ -82,14 +82,16 @@ export function CodePreview({ settings }: CodePreviewProps) {
   const [copied, setCopied] = useState(false);
 
   // Mapas de conversión
-  const directionMap: Record<string, "up" | "down" | "left" | "right" | "none"> =
-    {
-      "fade-up": "up",
-      "fade-down": "down",
-      "fade-left": "left",
-      "fade-right": "right",
-      fade: "none",
-    };
+  const directionMap: Record<
+    string,
+    "up" | "down" | "left" | "right" | "none"
+  > = {
+    "fade-up": "up",
+    "fade-down": "down",
+    "fade-left": "left",
+    "fade-right": "right",
+    fade: "none",
+  };
 
   const easingMap: Record<string, string> = {
     linear: "linear",
@@ -199,7 +201,11 @@ const childVariants = fade({
       <span> </span>
       <span className={C.propName}>direction</span>
       <span>: </span>
-      <span className={C.string}>{'"'}{direction}{'"'}</span>
+      <span className={C.string}>
+        {'"'}
+        {direction}
+        {'"'}
+      </span>
       <span>,</span>
       <br />
       <span> </span>
@@ -233,7 +239,11 @@ const childVariants = fade({
           <span> </span>
           <span className={C.propName}>ease</span>
           <span>: </span>
-          <span className={C.string}>{'"'}{easeValue}{'"'}</span>
+          <span className={C.string}>
+            {'"'}
+            {easeValue}
+            {'"'}
+          </span>
           <span>,</span>
           <br />
         </>
@@ -258,8 +268,8 @@ const childVariants = fade({
       return (
         <>
           {/* PARENT VARIANTS */}
-          {s(C.keyword, "const")} {v("parentVariants")}{" "}
-          {s(C.assign, "=")} {B(0).open}
+          {s(C.keyword, "const")} {v("parentVariants")} {s(C.assign, "=")}{" "}
+          {B(0).open}
           <br />
           <span> </span>
           <span className={C.propName}>initial</span>
@@ -275,7 +285,7 @@ const childVariants = fade({
           <span>: </span>
           {B(1).open}
           <br />
-          <span className={C.propName}>  opacity: </span>
+          <span className={C.propName}> opacity: </span>
           {n(1)}
           <span>,</span>
           <br />
@@ -309,16 +319,14 @@ const childVariants = fade({
           <br />
           <br />
           {/* CHILD VARIANTS */}
-          {s(C.keyword, "const")} {v("childVariants")}{" "}
-          {s(C.assign, "=")}{" "}
+          {s(C.keyword, "const")} {v("childVariants")} {s(C.assign, "=")}{" "}
           {renderFadeConfig(true)}
           <span>;</span>
           <br />
           <br />
           {/* RENDER */}
           <span>&lt;</span>
-          {t("motion.div")}{" "}
-          <span className={C.prop}>variants</span>
+          {t("motion.div")} <span className={C.prop}>variants</span>
           <span className={C.assign}>=</span>
           {B(0).open}
           {v("parentVariants")}
@@ -327,8 +335,7 @@ const childVariants = fade({
           <br />
           <span> </span>
           <span>&lt;</span>
-          {t("motion.div")}{" "}
-          <span className={C.prop}>variants</span>
+          {t("motion.div")} <span className={C.prop}>variants</span>
           <span className={C.assign}>=</span>
           {B(0).open}
           {v("childVariants")}
@@ -353,8 +360,7 @@ const childVariants = fade({
     return (
       <>
         <span>&lt;</span>
-        {t("motion.div")}{" "}
-        <span className={C.prop}>variants</span>
+        {t("motion.div")} <span className={C.prop}>variants</span>
         <span className={C.assign}>=</span>
         {B(0).open}
         {renderFadeConfig(false)}
@@ -404,8 +410,8 @@ const childVariants = fade({
                 {/* Imports (no copiables) */}
                 <div className="px-4 py-3 border-t border-white/5 bg-white/2">
                   <pre className="text-xs text-white/30 font-mono leading-relaxed">
-{`// Animaciones predefinidas
-import { fade } from "@blaze/motion";
+                    {`// Animaciones predefinidas
+import { fade } from "@blaze-motion/motion";
 
 // Motion
 import { motion } from "motion/react";`}

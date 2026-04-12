@@ -1,5 +1,5 @@
 {
-  "name": "@blaze/motion",
+  "name": "@blaze-motion/motion/motion",
   "version": "1.0.0",
   "description": "Fluidable animation presets for motion/react",
   "homepage": "https://github.com/blaze-motion/blaze-motion",

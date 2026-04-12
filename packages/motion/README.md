@@ -1,8 +1,8 @@
-# @blaze/motion
+# @blaze-motion/motion
 
-[![npm version](https://img.shields.io/npm/v/@blaze/motion.svg)](https://www.npmjs.com/package/@blaze/motion)
-[![npm downloads](https://img.shields.io/npm/dm/@blaze/motion.svg)](https://www.npmjs.com/package/@blaze/motion)
-[![license](https://img.shields.io/npm/l/@blaze/motion.svg)](https://github.com/blaze-motion/blaze-motion/blob/main/LICENSE)
+[![npm version](https://img.shields.io/npm/v/@blaze-motion/motion.svg)](https://www.npmjs.com/package/@blaze-motion/motion)
+[![npm downloads](https://img.shields.io/npm/dm/@blaze-motion/motion.svg)](https://www.npmjs.com/package/@blaze-motion/motion)
+[![license](https://img.shields.io/npm/l/@blaze-motion/motion.svg)](https://github.com/blaze-motion/blaze-motion/blob/main/LICENSE)
 
 Presets de animaciones fluidas para [motion/react](https://motion.dev/).
 
@@ -10,16 +10,16 @@ Presets de animaciones fluidas para [motion/react](https://motion.dev/).
 
 ```bash
 # npm
-npm install @blaze/motion
+npm install @blaze-motion/motion
 
 # pnpm
-pnpm add @blaze/motion
+pnpm add @blaze-motion/motion
 
 # yarn
-yarn add @blaze/motion
+yarn add @blaze-motion/motion
 
 # bun
-bun add @blaze/motion
+bun add @blaze-motion/motion
 ```
 
 ## Requisitos
@@ -31,7 +31,7 @@ bun add @blaze/motion
 
 ```tsx
 import { motion } from "motion/react";
-import { fade } from "@blaze/motion";
+import { fade } from "@blaze-motion/motion";
 
 export function MyComponent() {
   return (
@@ -53,7 +53,7 @@ export function MyComponent() {
 Crea una animación de fade con movimiento direccional opcional.
 
 ```tsx
-import { fade } from "@blaze/motion";
+import { fade } from "@blaze-motion/motion";
 
 const variants = fade({
   direction: "up", // "up" | "down" | "left" | "right" | "none" (por defecto: "up")

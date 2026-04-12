@@ -1,13 +1,8 @@
 "use client";
 
 import { useState, useEffect, useMemo, useRef } from "react";
-import {
-  motion,
-  Easing,
-  Variants,
-  stagger,
-} from "motion/react";
-import { fade } from "@blaze/motion";
+import { motion, Easing, Variants, stagger } from "motion/react";
+import { fade } from "@blaze-motion/motion";
 import { Play } from "lucide-react";
 import { CardContent } from "./CardContent";
 import { CodePreview } from "./CodePreview";
@@ -113,7 +108,7 @@ export function PlaygroundAnimation({ settings }: PlaygroundAnimationProps) {
    * - staggerChildren: tiempo entre cada hijo
    */
   const staggerValue = staggerDelay?.value || 0.1;
-  
+
   const parentVariants: Variants = {
     initial: { opacity: 0 },
     animate: {
@@ -127,7 +122,7 @@ export function PlaygroundAnimation({ settings }: PlaygroundAnimationProps) {
 
   /**
    * Variantes de las tarjetas hijas.
-   * Usa la animación fade() del paquete @blaze/motion.
+   * Usa la animación fade() del paquete @blaze-motion/motion.
    *
    * excludeDelay: true es CRUCIAL para que stagger funcione.
    * Si fade incluye su propio delay, sobrescribe el delay del stagger del padre.

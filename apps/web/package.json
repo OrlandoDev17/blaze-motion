@@ -1,5 +1,5 @@
 {
-  "name": "@blaze-motion/web",
+  "name": "@blaze-motion/motion/web",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,7 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@blaze/motion": "workspace:*",
+    "@blaze-motion/motion": "workspace:*",
     "@reduxjs/toolkit": "^2.11.2",
     "lucide-react": "^1.7.0",
     "motion": "^12.38.0",
