@@ -379,6 +379,8 @@ const childVariants = fade({
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="w-full flex items-center justify-between px-4 py-3 bg-white/5 hover:bg-white/10 transition-colors"
+          aria-expanded={isOpen}
+          aria-controls="code-preview-content"
         >
           <span className="text-sm font-medium text-white/80">Código</span>
           {isOpen ? (
@@ -391,6 +393,7 @@ const childVariants = fade({
         <AnimatePresence initial={false}>
           {isOpen && (
             <motion.div
+              id="code-preview-content"
               initial={{ height: 0 }}
               animate={{ height: "auto" }}
               exit={{ height: 0 }}
@@ -419,7 +422,7 @@ import { motion } from "motion/react";`}
                   <button
                     onClick={handleCopy}
                     className="absolute top-2 right-2 p-2 rounded-md bg-white/10 hover:bg-white/20 transition-colors"
-                    title="Copiar código"
+                    aria-label={copied ? "Code copied" : "Copy code"}
                   >
                     {copied ? (
                       <Check className="size-4 text-green-400" />

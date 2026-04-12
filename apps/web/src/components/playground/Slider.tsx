@@ -39,7 +39,10 @@ export function Slider({
     ? String(step).split(".")[1].length
     : 0;
 
-  const formatValue = (v: number) => Number(v.toFixed(decimals));
+  const formatValue = useCallback(
+    (v: number) => Number(v.toFixed(decimals)),
+    [decimals]
+  );
 
   const getValueFromPosition = useCallback(
     (clientX: number) => {
@@ -52,7 +55,7 @@ export function Slider({
       const rawValue = min + ratio * (max - min);
       return formatValue(Math.round(rawValue / step) * step);
     },
-    [value, min, max, step, decimals]
+    [value, min, max, step, formatValue]
   );
 
   const handlePointerDown = useCallback(
@@ -120,9 +123,6 @@ export function Slider({
     }
   };
 
-  const prefersReducedMotion = typeof window !== "undefined" && 
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
   return (
     <div className="flex flex-col gap-2 w-full">
       <div className="flex items-center justify-between">
@@ -141,6 +141,9 @@ export function Slider({
             onChange={handleInputChange}
             onBlur={handleInputBlur}
             onKeyDown={handleInputKeyDown}
+            aria-label={`${label} value`}
+            autoComplete="off"
+            name={label.toLowerCase().replace(/\s+/g, "-")}
           />
         ) : (
           <button
@@ -186,8 +189,23 @@ export function Slider({
               ? "0 0 12px rgba(255, 200, 50, 0.5)"
               : "0 2px 6px rgba(0, 0, 0, 0.3)",
           }}
-          transition={{ type: "spring", stiffness: 400, damping: 25 }}
+          transition={{ type: "spring", stiffness: 400, damping: 25, scale: { duration: 0.15 }, boxShadow: { duration: 0.15 } }}
+          onKeyDown={handleThumbKeyDown}
+          tabIndex={0}
+          role="slider"
+          aria-label={`${label} slider`}
+          aria-valuemin={min}
+          aria-valuemax={max}
+          aria-valuenow={value}
         />
+        {isDragging && (
+          <div
+            className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 px-2 py-1 bg-neutral-800 rounded-md text-xs text-white font-mono pointer-events-none"
+            style={{ left: `${percentage}%` }}
+          >
+            {formatValue(value)}{unit}
+          </div>
+        )}
       </div>
     </div>
   );
