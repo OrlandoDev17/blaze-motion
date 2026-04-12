@@ -19,7 +19,7 @@
     "fade"
   ],
   "license": "MIT",
-  "author": "",
+  "author": "Orlando López <orlandodev1707@gmail.com>",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -40,6 +40,7 @@
     "dist"
   ],
   "scripts": {
+    "prepublishOnly": "bun run typecheck && bun run build",
     "build": "tsup src/index.ts --format cjs,esm --dts --clean",
     "typecheck": "tsc --noEmit"
   },
@@ -57,7 +58,7 @@
   },
   "peerDependenciesMeta": {
     "react": {
-      "optional": true
+      "optional": false
     },
     "motion": {
       "optional": false,
