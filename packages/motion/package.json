@@ -1,14 +1,14 @@
 {
-  "name": "@blaze-motion/motion/motion",
+  "name": "@blaze-motion/motion",
   "version": "1.0.0",
   "description": "Fluidable animation presets for motion/react",
-  "homepage": "https://github.com/blaze-motion/blaze-motion",
+  "homepage": "https://github.com/OrlandoDev17/blaze-motion",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/blaze-motion/blaze-motion.git"
+    "url": "git+https://github.com/OrlandoDev17/blaze-motion.git"
   },
   "bugs": {
-    "url": "https://github.com/blaze-motion/blaze-motion/issues"
+    "url": "https://github.com/OrlandoDev17/blaze-motion/issues"
   },
   "keywords": [
     "animation",
