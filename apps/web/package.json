@@ -9,7 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@blaze-motion/motion": "workspace:*",
+    "@blaze-motion/motion": "^1.0.0",
     "@reduxjs/toolkit": "^2.11.2",
     "lucide-react": "^1.7.0",
     "motion": "^12.38.0",
