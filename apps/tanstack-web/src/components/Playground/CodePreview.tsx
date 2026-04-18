@@ -60,7 +60,7 @@ const n = (content: string | number) => s(C.value, String(content));
 // =============================================================================
 
 export function CodePreview({ settings }: CodePreviewProps) {
-  const { type, easing, duration, distance, stiffness, damping, staggerDelay } =
+  const { type, easing, duration, distance, scale, blur, stiffness, damping, staggerDelay } =
     settings;
 
   // Toggle para mostrar/ocultar
@@ -89,10 +89,38 @@ export function CodePreview({ settings }: CodePreviewProps) {
     backInOut: "backInOut",
   };
 
+  //默认值
+  const DEFAULTS = { direction: "up", distance: 40, duration: 0.5, scale: 1, blur: 0, stiffness: 100, damping: 14 };
+
   const isCustomSpring = easing === "custom";
   const direction = directionMap[type] || "up";
   const easeValue = easingMap[easing] || "easeOut";
   const staggerValue = staggerDelay?.value || 0.1;
+
+  const isNone = type === "fade";
+
+  // Helper para generar props opcionales
+  const buildFadeProps = (opts: { isSpring: boolean; excludeDistance?: boolean }) => {
+    const props: string[] = [];
+    if (opts.excludeDistance || isNone) {
+    } else if (distance !== DEFAULTS.distance) {
+      props.push(`  distance: ${distance}`);
+    }
+    if (opts.isSpring) {
+      if (stiffness !== DEFAULTS.stiffness) props.push(`  stiffness: ${stiffness}`);
+      if (damping !== DEFAULTS.damping) props.push(`  damping: ${damping}`);
+    } else {
+      if (duration !== DEFAULTS.duration) props.push(`  duration: ${duration}`);
+      if (easeValue !== "easeOut") props.push(`  ease: "${easeValue}"`);
+    }
+    if (scale !== DEFAULTS.scale) props.push(`  scale: ${scale}`);
+    if (blur !== DEFAULTS.blur) props.push(`  blur: ${blur}`);
+    if (props.length === 0) return "fade()";
+    return `fade({\n${props.join(",\n")}\n})`;
+  };
+
+  const fadeWithProps = buildFadeProps({ isSpring: isCustomSpring, excludeDistance: isNone });
+  const fadeWithPropsNoExclude = buildFadeProps({ isSpring: isCustomSpring, excludeDistance: false });
 
   // Código copiable (string simple)
   const generatedCode = isCustomSpring
@@ -107,12 +135,7 @@ export function CodePreview({ settings }: CodePreviewProps) {
   }
 };
 
-const childVariants = fade({
-  direction: "${direction}",
-  distance: ${distance},
-  spring: { stiffness: ${stiffness}, damping: ${damping} },
-  excludeDelay: true
-});
+const childVariants = ${fadeWithPropsNoExclude.replace("fade({", "fade({\n  direction: \"" + direction + "\",")};
 
 <motion.div variants={parentVariants}>
   <motion.div variants={childVariants}>
@@ -130,13 +153,7 @@ const childVariants = fade({
   }
 };
 
-const childVariants = fade({
-  direction: "${direction}",
-  distance: ${distance},
-  duration: ${duration},
-  ease: "${easeValue}",
-  excludeDelay: true
-});
+const childVariants = ${fadeWithPropsNoExclude.replace("fade({", "fade({\n  direction: \"" + direction + "\",")};
 
 <motion.div variants={parentVariants}>
   <motion.div variants={childVariants}>
@@ -146,21 +163,10 @@ const childVariants = fade({
 
   // Código simple sin stagger
   const simpleCode = isCustomSpring
-    ? `<motion.div variants={fade({
-  direction: "${direction}",
-  distance: ${distance},
-  spring: { stiffness: ${stiffness}, damping: ${damping} },
-  excludeDelay: true
-})}>
+    ? `<motion.div variants=${fadeWithProps.replace("fade({", "fade({\n  direction: \"" + direction + "\",")}>
   {/* children */}
 </motion.div>`
-    : `<motion.div variants={fade({
-  direction: "${direction}",
-  distance: ${distance},
-  duration: ${duration},
-  ease: "${easeValue}",
-  excludeDelay: true
-})}>
+    : `<motion.div variants=${fadeWithProps.replace("fade({", "fade({\n  direction: \"" + direction + "\",")}>
   {/* children */}
 </motion.div>`;
 
@@ -178,75 +184,110 @@ const childVariants = fade({
   };
 
   // Renderiza fade({...}) con colores
-  const renderFadeConfig = (withExcludeDelay: boolean) => (
-    <>
-      <span className={C.keyword}>fade</span>
-      <span>(</span>
-      {B(0).open}
-      <br />
-      <span> </span>
-      <span className={C.propName}>direction</span>
-      <span>: </span>
-      <span className={C.string}>
-        {'"'}
-        {direction}
-        {'"'}
-      </span>
-      <span>,</span>
-      <br />
-      <span> </span>
-      <span className={C.propName}>distance</span>
-      <span>: </span>
-      {n(distance)}
-      <span>,</span>
-      <br />
-      {isCustomSpring ? (
+  const renderFadeConfig = (withExcludeDelay: boolean) => {
+    const items: React.ReactNode[] = [];
+    items.push(
+      <>
+        <span className={C.propName}>direction</span>
+        <span>: </span>
+        <span className={C.string}>{"\""}{direction}{"\""}</span>
+      </>
+    );
+    if (!isNone && distance !== DEFAULTS.distance) {
+      items.push(
         <>
-          <span> </span>
-          <span className={C.propName}>spring</span>
+          <span className={C.propName}>distance</span>
           <span>: </span>
-          {B(1).open}
-          <span> stiffness: </span>
-          {n(stiffness)}
-          <span>, damping: </span>
-          {n(damping)}
-          {B(1).close}
-          <span>,</span>
-          <br />
+          {n(distance)}
         </>
-      ) : (
+      );
+    }
+    if (isCustomSpring) {
+      if (stiffness !== DEFAULTS.stiffness || damping !== DEFAULTS.damping) {
+        items.push(
+          <>
+            <span className={C.propName}>spring</span>
+            <span>: </span>
+            {B(1).open}
+            {stiffness !== DEFAULTS.stiffness && <><span> stiffness: </span>{n(stiffness)}{damping !== DEFAULTS.damping && <span>, </span>}</>}
+            {damping !== DEFAULTS.damping && <><span> damping: </span>{n(damping)}</>}
+            {B(1).close}
+          </>
+        );
+      }
+    } else {
+      if (duration !== DEFAULTS.duration) {
+        items.push(
+          <>
+            <span className={C.propName}>duration</span>
+            <span>: </span>
+            {n(duration)}
+          </>
+        );
+      }
+      if (easeValue !== "easeOut") {
+        items.push(
+          <>
+            <span className={C.propName}>ease</span>
+            <span>: </span>
+            <span className={C.string}>{"\""}{easeValue}{"\""}</span>
+          </>
+        );
+      }
+    }
+    if (scale !== DEFAULTS.scale) {
+      items.push(
         <>
-          <span> </span>
-          <span className={C.propName}>duration</span>
+          <span className={C.propName}>scale</span>
           <span>: </span>
-          {n(duration)}
-          <span>,</span>
-          <br />
-          <span> </span>
-          <span className={C.propName}>ease</span>
-          <span>: </span>
-          <span className={C.string}>
-            {'"'}
-            {easeValue}
-            {'"'}
-          </span>
-          <span>,</span>
-          <br />
+          {n(scale)}
         </>
-      )}
-      {withExcludeDelay && (
+      );
+    }
+    if (blur !== DEFAULTS.blur) {
+      items.push(
         <>
-          <span> </span>
+          <span className={C.propName}>blur</span>
+          <span>: </span>
+          {n(blur)}
+        </>
+      );
+    }
+    if (withExcludeDelay) {
+      items.push(
+        <>
           <span className={C.propName}>excludeDelay</span>
           <span>: </span>
           <span className={C.prop}>true</span>
         </>
-      )}
-      {withExcludeDelay && <br />}
-      {B(0).close}
-      <span>)</span>
-    </>
-  );
+      );
+    }
+
+    return (
+      <>
+        <span className={C.keyword}>fade</span>
+        <span>(</span>
+        {items.length === 0 ? (
+          <span>)</span>
+        ) : (
+          <>
+            {B(0).open}
+            <br />
+            {items.map((item, i) => (
+              <span key={i}>
+                <span> </span>
+                {item}
+                {i < items.length - 1 && <span>,</span>}
+                <br />
+              </span>
+            ))}
+            {B(0).close}
+            <span>)</span>
+          </>
+        )}
+      </>
+    );
+  };
 
   // Renderiza el código con colores
   const renderCode = () => {
