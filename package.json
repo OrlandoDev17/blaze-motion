@@ -5,8 +5,12 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "bun --filter @blaze-motion/motion/web dev",
-    "build:web": "bun --filter @blaze-motion/motion/web build",
-    "build:motion": "bun --filter @blaze-motion/motion build"
+    "dev": "bun --filter @blaze-motion/tanstack-web dev",
+    "build:web": "bun --filter @blaze-motion/tanstack-web build",
+    "build:motion": "bun --filter @blaze-motion/motion build",
+    "kill:ports": "kill-port 3000 3001"
+  },
+  "devDependencies": {
+    "kill-port": "^2.0.1"
   }
 }
