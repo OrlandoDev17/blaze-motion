@@ -1,76 +1,50 @@
 // Hooks
-import { useStore } from "@tanstack/react-store";
-import { useState } from "react";
+import { useSelector } from "@tanstack/react-store";
 // Store
-import { animationStore, updateAnimation, resetAnimation } from "@/store/animationStore";
+import {
+  animationStore,
+  updateAnimation,
+  resetAnimation,
+} from "@/store/animationStore";
 // Constants
 import {
   SELECTABLE_PROPERTIES,
-  SLIDER_PROPERTIES,
+  SLIDER_PROPERTIES_MAP,
 } from "@/constants/inspector";
 // Components
 import { PropertySelector } from "./PropertySelector";
 import { Slider } from "./Slider";
 import { StaggerToggle } from "./StaggerToggle";
 
-function TimingSection({ easing }: { easing: string }) {
-  const stiffness = useStore(animationStore, (s) => s.stiffness);
-  const damping = useStore(animationStore, (s) => s.damping);
-
-  if (easing !== "custom") {
-    return null;
-  }
-
-  return (
-    <>
-      <Slider
-        label={SLIDER_PROPERTIES.stiffness.label}
-        value={stiffness}
-        min={SLIDER_PROPERTIES.stiffness.min}
-        max={SLIDER_PROPERTIES.stiffness.max}
-        onChange={(v) => updateAnimation({ stiffness: v })}
-        step={SLIDER_PROPERTIES.stiffness.step}
-        unit={SLIDER_PROPERTIES.stiffness.unit}
-      />
-      <Slider
-        label={SLIDER_PROPERTIES.damping.label}
-        value={damping}
-        min={SLIDER_PROPERTIES.damping.min}
-        max={SLIDER_PROPERTIES.damping.max}
-        onChange={(v) => updateAnimation({ damping: v })}
-        step={SLIDER_PROPERTIES.damping.step}
-        unit={SLIDER_PROPERTIES.damping.unit}
-      />
-    </>
-  );
-}
-
 export function PropertyInspector() {
-  // 1. Selectores Granulares
-  const animationType = useStore(animationStore, (s) => s.type);
-  const easing = useStore(animationStore, (s) => s.easing);
-  const distance = useStore(animationStore, (s) => s.distance);
-  const delay = useStore(animationStore, (s) => s.delay);
-  const staggerSettings = useStore(animationStore, (s) => s.staggerDelay);
+  const animationType = useSelector(animationStore, (s) => s.type);
+  const easing = useSelector(animationStore, (s) => s.easing);
+  const staggerSettings = useSelector(animationStore, (s) => s.staggerDelay);
 
-  const [_showCustomEasing, setShowCustomEasing] = useState(false);
+  const duration = useSelector(animationStore, (s) => s.duration);
+  const distance = useSelector(animationStore, (s) => s.distance);
+  const scale = useSelector(animationStore, (s) => s.scale);
+  const blur = useSelector(animationStore, (s) => s.blur);
+  const delay = useSelector(animationStore, (s) => s.delay);
+  const stiffness = useSelector(animationStore, (s) => s.stiffness);
+  const damping = useSelector(animationStore, (s) => s.damping);
 
-  // 2. Handlers
+  const isCustom = easing === "custom";
+  const isNone = animationType === "fade";
+  const sliderValues = isCustom
+    ? { stiffness, damping }
+    : { duration, ...(isNone ? {} : { distance }), scale, blur, delay };
+
   const handleTypeChange = (type: string) => updateAnimation({ type });
-
-  const handleEasingChange = (value: string) => {
+  const handleEasingChange = (value: string) =>
     updateAnimation({ easing: value });
-    setShowCustomEasing(value === "custom");
-  };
-
-  const isXAxis =
-    animationType === "fade-left" || animationType === "fade-right";
 
   return (
     <aside className="w-md 2xl:w-lg bg-dark-200 flex flex-col h-full border-l border-selective-yellow-600/30 shrink-0 shadow-lg">
       <header className="flex items-center justify-between border-b border-slate-600/30 px-6 py-6">
         <h2 className="text-xl font-bold">Inspector de propiedades</h2>
         <button
+          type="button"
           onClick={resetAnimation}
           className="px-3 py-1.5 text-xs font-medium text-white/60 hover:text-white hover:bg-white/10 rounded-md transition-colors"
         >
@@ -98,45 +72,26 @@ export function PropertyInspector() {
         </div>
 
         <div className="flex flex-col gap-5">
-          {/* Duration */}
-          <Slider
-            label={SLIDER_PROPERTIES.duration.label}
-            value={useStore(animationStore, (s) => s.duration)}
-            min={SLIDER_PROPERTIES.duration.min}
-            max={SLIDER_PROPERTIES.duration.max}
-            onChange={(v) => updateAnimation({ duration: v })}
-            step={SLIDER_PROPERTIES.duration.step}
-            unit={SLIDER_PROPERTIES.duration.unit}
-          />
-
-          {/* Distance */}
-          <Slider
-            label={isXAxis ? "Distancia X" : "Distancia Y"}
-            value={distance}
-            min={0}
-            max={200}
-            onChange={(v) => updateAnimation({ distance: v })}
-            step={1}
-            unit="px"
-          />
-
-          {/* Delay */}
-          {!staggerSettings?.enabled && (
-            <Slider
-              label="Delay"
-              value={delay}
-              min={0}
-              max={5}
-              step={0.1}
-              onChange={(v) => updateAnimation({ delay: v })}
-            />
-          )}
-
-          {/* Spring parameters */}
-          <TimingSection easing={easing} />
+          {Object.entries(sliderValues).map(([propId, value]) => {
+            const prop =
+              SLIDER_PROPERTIES_MAP[
+                propId as keyof typeof SLIDER_PROPERTIES_MAP
+              ];
+            return (
+              <Slider
+                key={propId}
+                label={prop.label}
+                value={value}
+                min={prop.min}
+                max={prop.max}
+                onChange={(v) => updateAnimation({ [propId]: v })}
+                step={prop.step}
+                unit={prop.unit}
+              />
+            );
+          })}
         </div>
 
-        {/* Stagger Toggle */}
         <StaggerToggle
           label="Stagger"
           enabled={staggerSettings?.enabled || false}
@@ -151,40 +106,42 @@ export function PropertyInspector() {
           }
         >
           <div className="flex flex-col gap-4 pt-2">
-            <Slider
-              label="Cantidad de elementos"
-              value={staggerSettings?.count ?? 3}
-              min={2}
-              max={6}
-              onChange={(v) =>
-                updateAnimation({
-                  staggerDelay: {
-                    ...staggerSettings,
-                    enabled: true,
-                    count: v,
-                    value: staggerSettings?.value ?? 0.15,
-                  },
-                })
-              }
-              step={1}
-            />
-            <Slider
-              label="Intervalo"
-              value={staggerSettings?.value ?? 0.15}
-              min={SLIDER_PROPERTIES.stagger.min}
-              max={SLIDER_PROPERTIES.stagger.max}
-              step={SLIDER_PROPERTIES.stagger.step}
-              onChange={(v) =>
-                updateAnimation({
-                  staggerDelay: {
-                    ...staggerSettings,
-                    enabled: true,
-                    count: staggerSettings?.count ?? 3,
-                    value: v,
-                  },
-                })
-              }
-            />
+            {["staggerCount", "stagger"].map((propId) => {
+              const prop =
+                SLIDER_PROPERTIES_MAP[
+                  propId as keyof typeof SLIDER_PROPERTIES_MAP
+                ];
+              const value =
+                propId === "staggerCount"
+                  ? (staggerSettings?.count ?? 3)
+                  : (staggerSettings?.value ?? 0.15);
+              return (
+                <Slider
+                  key={propId}
+                  label={prop.label}
+                  value={value}
+                  min={prop.min}
+                  max={prop.max}
+                  onChange={(v) =>
+                    updateAnimation({
+                      staggerDelay: {
+                        ...staggerSettings,
+                        enabled: true,
+                        count:
+                          propId === "staggerCount"
+                            ? v
+                            : (staggerSettings?.count ?? 3),
+                        value:
+                          propId === "stagger"
+                            ? v
+                            : (staggerSettings?.value ?? 0.15),
+                      },
+                    })
+                  }
+                  step={prop.step}
+                />
+              );
+            })}
           </div>
         </StaggerToggle>
       </section>

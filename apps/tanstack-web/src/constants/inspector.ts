@@ -31,6 +31,10 @@ export const SELECTABLE_PROPERTIES = [
     label: "Type",
     properties: [
       {
+        label: "None",
+        value: "fade",
+      },
+      {
         label: "Fade Up",
         value: "fade-up",
       },
@@ -55,7 +59,7 @@ export const SELECTABLE_PROPERTIES = [
   },
 ];
 
-export const SLIDER_PROPERTIES = {
+export const SLIDER_PROPERTIES_MAP = {
   duration: {
     id: "duration",
     label: "Duration",
@@ -64,16 +68,6 @@ export const SLIDER_PROPERTIES = {
     min: 0.1,
     max: 3,
     step: 0.1,
-    unit: "s",
-  },
-  delay: {
-    id: "delay",
-    label: "Delay",
-    description: "Tiempo de espera antes de que inizi la animación.",
-    example: "0.2s = espera 200ms",
-    min: 0,
-    max: 2,
-    step: 0.05,
     unit: "s",
   },
   distance: {
@@ -85,6 +79,36 @@ export const SLIDER_PROPERTIES = {
     max: 200,
     step: 5,
     unit: "px",
+  },
+  scale: {
+    id: "scale",
+    label: "Scale",
+    description: "Tamaño inicial del elemento.",
+    example: "0.8 = 80% del tamaño original",
+    min: 0,
+    max: 2,
+    step: 0.1,
+    unit: "",
+  },
+  blur: {
+    id: "blur",
+    label: "Blur",
+    description: "Desenfoque inicial del elemento.",
+    example: "5px = desenfoque de 5px",
+    min: 0,
+    max: 20,
+    step: 1,
+    unit: "px",
+  },
+  delay: {
+    id: "delay",
+    label: "Delay",
+    description: "Tiempo de espera antes de que inizi la animación.",
+    example: "0.2s = espera 200ms",
+    min: 0,
+    max: 2,
+    step: 0.05,
+    unit: "s",
   },
   stiffness: {
     id: "stiffness",
@@ -130,7 +154,16 @@ export const SLIDER_PROPERTIES = {
 };
 
 export const SLIDER_IDS = {
-  PRESET: ["duration", "delay", "distance"],
-  SPRING: ["stiffness", "damping", "delay", "distance"],
+  PRESET: ["duration", "distance", "scale", "blur", "delay"],
+  SPRING: ["stiffness", "damping"],
   STAGGER: ["staggerCount", "stagger"],
+};
+
+export const EASING_SLIDER_MAP: Record<string, string[]> = {
+  linear: SLIDER_IDS.PRESET,
+  easeIn: SLIDER_IDS.PRESET,
+  easeOut: SLIDER_IDS.PRESET,
+  easeInOut: SLIDER_IDS.PRESET,
+  backOut: SLIDER_IDS.PRESET,
+  custom: SLIDER_IDS.SPRING,
 };

@@ -23,6 +23,8 @@ export function PlaygroundAnimation({ settings }: PlaygroundAnimationProps) {
     duration,
     distance,
     delay,
+    scale,
+    blur,
     stiffness,
     damping,
     staggerDelay,
@@ -128,6 +130,8 @@ export function PlaygroundAnimation({ settings }: PlaygroundAnimationProps) {
       direction,
       distance,
       duration,
+      scale,
+      blur,
       delay: shouldExcludeDelay ? 0 : delay,
       excludeDelay: !!shouldExcludeDelay,
       ease: !isCustomSpring ? easeValue : undefined,
@@ -136,11 +140,12 @@ export function PlaygroundAnimation({ settings }: PlaygroundAnimationProps) {
 
     return fade(baseOptions);
   }, [
-    settings,
     isCustomSpring,
     direction,
     distance,
     duration,
+    scale,
+    blur,
     delay,
     easeValue,
     stiffness,

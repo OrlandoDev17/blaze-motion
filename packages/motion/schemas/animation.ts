@@ -4,6 +4,8 @@ export const AnimationStoreSchema = z.object({
   duration: z.number().default(0.6),
   distance: z.number().default(40),
   delay: z.number().default(0),
+  scale: z.number().default(1),
+  blur: z.number().default(0),
   type: z
     .enum(["fade", "fade-up", "fade-down", "fade-left", "fade-right"])
     .default("fade-up"),

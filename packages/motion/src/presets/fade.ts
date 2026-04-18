@@ -9,6 +9,8 @@ export interface FadeProps {
   ease?: any;
   spring?: Omit<SpringOptions, "keyframes">;
   excludeDelay?: boolean;
+  blur?: number;
+  scale?: number;
 }
 
 export const FadeOptionsSchema = z.object({
@@ -19,13 +21,24 @@ export const FadeOptionsSchema = z.object({
   ease: z.any().optional(),
   spring: z.any().optional(),
   excludeDelay: z.boolean().default(false),
+  blur: z.number().default(0),
+  scale: z.number().default(1),
 });
 
 export const fade = (options: FadeProps = {}): Variants => {
   const validatedOptions = FadeOptionsSchema.parse(options);
 
-  const { direction, distance, duration, delay, ease, spring, excludeDelay } =
-    validatedOptions;
+  const {
+    direction,
+    distance,
+    duration,
+    delay,
+    ease,
+    spring,
+    excludeDelay,
+    scale,
+    blur,
+  } = validatedOptions;
 
   // Define el desplazamiento inicial según la dirección
   const directions = {
@@ -56,11 +69,15 @@ export const fade = (options: FadeProps = {}): Variants => {
     initial: {
       opacity: 0,
       ...directions[direction],
+      scale: scale,
+      filter: `blur(${blur}px)`,
     },
     animate: {
       opacity: 1,
       x: 0,
       y: 0,
+      scale: 1,
+      filter: "blur(0px)",
       transition,
     },
   } as unknown as Variants;
