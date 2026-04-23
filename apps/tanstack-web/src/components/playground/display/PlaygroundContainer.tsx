@@ -1,10 +1,10 @@
 import { fade } from "@blaze-motion/motion";
-import { ParticlesBackground } from "./ParticlesBackground";
-import { PlaygroundElement } from "./PlaygroundElement";
-import { PropertyInspector } from "./PropertyInspector";
+import { ParticlesBackground } from "@playground/display/ParticlesBackground";
+import { PlaygroundElement } from "@playground/display/PlaygroundElement";
+import { PropertyInspector } from "@playground/ui-controls/PropertyInspector";
 import { motion } from "motion/react";
 
-export function Playground() {
+export function PlaygroundContainer() {
   return (
     <section className="relative flex h-full w-full overflow-hidden">
       {/* Background Grid */}

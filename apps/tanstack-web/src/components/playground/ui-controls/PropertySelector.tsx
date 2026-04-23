@@ -28,38 +28,39 @@ export function PropertySelector({
           className="flex items-center justify-between w-full bg-dark-100 px-4 py-2.5 rounded-sm text-neutral-300 hover:text-radical-red-400 transition-colors duration-200"
           onClick={() => setIsOpen(!isOpen)}
         >
-          <span className="truncate">{selectedLabel}</span>
-          <motion.div
-            animate={{ rotate: isOpen ? 180 : 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            <ChevronDown className="size-4" />
-          </motion.div>
+          <span className="text-sm">{selectedLabel}</span>
+          <ChevronDown
+            className={`size-4 text-neutral-500 transition-transform duration-200 ${
+              isOpen ? "rotate-180" : ""
+            }`}
+          />
         </button>
-
         <AnimatePresence>
           {isOpen && (
-            <motion.ul
-              className="absolute z-50 w-full mt-1 bg-dark-50 rounded-sm border border-neutral-700/50 shadow-lg overflow-hidden"
+            <motion.div
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.15 }}
+              className="absolute top-full left-0 right-0 mt-1 bg-dark-100 border border-white/5 rounded-sm overflow-hidden z-50"
             >
               {properties.map((property) => (
-                <motion.li
+                <button
                   key={property.value}
-                  className="px-4 py-2.5 text-neutral-300 text-sm cursor-pointer hover:text-radical-red-500 hover:bg-neutral-800/50 transition-colors duration-150"
+                  className={`flex items-center w-full px-4 py-2 text-sm text-left transition-colors duration-200 hover:bg-white/5 ${
+                    selectedProperty === property.value
+                      ? "text-radical-red-400 bg-white/5"
+                      : "text-neutral-300"
+                  }`}
                   onClick={() => {
                     onSelectProperty(property.value);
                     setIsOpen(false);
                   }}
-                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
                 >
                   {property.label}
-                </motion.li>
+                </button>
               ))}
-            </motion.ul>
+            </motion.div>
           )}
         </AnimatePresence>
       </div>

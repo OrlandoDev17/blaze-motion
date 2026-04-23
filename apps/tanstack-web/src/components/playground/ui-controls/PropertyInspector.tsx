@@ -12,9 +12,9 @@ import {
   SLIDER_PROPERTIES_MAP,
 } from "@/constants/inspector";
 // Components
-import { PropertySelector } from "./PropertySelector";
-import { Slider } from "./Slider";
-import { StaggerToggle } from "./StaggerToggle";
+import { PropertySelector } from "@playground/ui-controls/PropertySelector";
+import { Slider } from "@playground/ui-controls/Slider";
+import { StaggerToggle } from "@playground/ui-controls/StaggerToggle";
 
 export function PropertyInspector() {
   const animationType = useSelector(animationStore, (s) => s.type);

@@ -2,8 +2,8 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import { motion, type Easing, type Variants, stagger } from "motion/react";
 import { fade } from "@blaze-motion/motion";
 import { Play } from "lucide-react";
-import { CardContent } from "./CardContent";
-import { CodePreview } from "./CodePreview";
+import { CardContent } from "@playground/display/CardContent";
+import { CodePreview } from "@playground/display/CodePreview";
 import type { AnimationStore } from "@blaze-motion/motion";
 
 function getGridClass(count: number): string {

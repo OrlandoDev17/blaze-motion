@@ -31,23 +31,19 @@ export function InfoTooltip({ content, example }: InfoTooltipProps) {
       <AnimatePresence>
         {isHovered && (
           <motion.div
-            initial={{ opacity: 0, y: 6, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 6, scale: 0.96 }}
-            transition={{ duration: 0.12 }}
-            className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2.5 px-3.5 py-2.5 bg-neutral-900 border border-selective-yellow-500/30 rounded-lg shadow-2xl z-50 w-56 pointer-events-none"
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 4 }}
+            transition={{ duration: 0.15 }}
+            className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 px-3 py-2 bg-dark-100 border border-white/10 rounded-md shadow-lg text-xs text-neutral-300 z-50"
           >
-            <div className="absolute top-full left-1/2 -translate-x-1/2 border-5 border-transparent border-t-neutral-900" />
-            <p className="text-xs text-neutral-200 leading-relaxed">
-              {content}
-            </p>
+            <p>{content}</p>
             {example && (
-              <div className="mt-2 pt-2 border-t border-white/10">
-                <p className="text-[10px] text-selective-yellow-400/80 font-mono">
-                  Ej: {example}
-                </p>
-              </div>
+              <p className="mt-1 text-selective-yellow-500/80 font-mono">
+                {example}
+              </p>
             )}
+            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 rotate-45 w-2 h-2 bg-dark-100 border-r border-b border-white/10" />
           </motion.div>
         )}
       </AnimatePresence>

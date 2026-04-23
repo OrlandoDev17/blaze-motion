@@ -9,6 +9,7 @@
       "#/*": ["./src/*"],
       "@/*": ["./src/*"],
       "@components/*": ["./src/components/*"],
+      "@playground/*": ["./src/components/playground/*"],
       "@lib/*": ["./src/lib/*"],
       "@routes/*": ["./src/routes/*"],
       "@blaze-motion/motion": ["../../packages/motion/src"]

@@ -1,4 +1,4 @@
-import { PlaygroundAnimation } from "./PlaygroundAnimation";
+import { PlaygroundAnimation } from "@playground/display/PlaygroundAnimation";
 import { useStore } from "@tanstack/react-store";
 import { animationStore } from "@/store/animationStore";
 
