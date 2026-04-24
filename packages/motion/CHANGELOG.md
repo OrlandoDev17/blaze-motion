@@ -5,6 +5,13 @@ Todos los cambios notables de este proyecto se documentarán en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adherisce a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-04-24
+
+### Añadido
+
+- **`parentVariants()`** - Preset para padres con stagger
+  - `delayChildren` - Retraso entre cada hijo (default: 0.1)
+
 ## [1.1.0] - 2026-04-18
 
 ### Añadido
