@@ -1,7 +1,7 @@
 import { NAV_LINKS } from "@/constants/navigation";
-import { AnimatePresence, motion, stagger } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
-import { fade } from "@blaze-motion/motion";
+import { fade, parentVariants } from "@blaze-motion/motion";
 
 export function Header() {
   const [hoveredTab, setHoveredTab] = useState<string | null>("#playground");
@@ -11,14 +11,9 @@ export function Header() {
     setActiveTab(href);
   };
 
-  const parentVariants = {
-    initial: { opacity: 1 },
-    animate: { opacity: 1, transition: { delayChildren: stagger(0.4) } },
-  };
-
   return (
     <motion.header
-      variants={parentVariants}
+      variants={parentVariants({ stagger: 0.15 })}
       initial="initial"
       animate="animate"
       className="flex items-center justify-between px-8 bg-dark-100 h-16"
@@ -27,7 +22,7 @@ export function Header() {
         <motion.h2
           variants={fade({
             direction: "right",
-            distance: 20,
+            distance: 40,
             ease: "backOut",
             excludeDelay: true,
           })}
@@ -36,7 +31,10 @@ export function Header() {
           BlazeMotion
         </motion.h2>
       </div>
-      <motion.ul variants={parentVariants} className="flex items-center gap-4">
+      <motion.ul
+variants={parentVariants({ stagger: 0.15 })}
+      className="flex items-center gap-4"
+      >
         {NAV_LINKS.map(({ id, label, href }) => (
           <motion.li
             variants={fade({
@@ -81,7 +79,7 @@ export function Header() {
           direction: "left",
           distance: 20,
           ease: "backOut",
-          delay: 1.5,
+          delay: 0.7,
         })}
         className="flex-1 flex items-center justify-end"
       >

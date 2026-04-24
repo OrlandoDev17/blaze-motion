@@ -60,8 +60,17 @@ const n = (content: string | number) => s(C.value, String(content));
 // =============================================================================
 
 export function CodePreview({ settings }: CodePreviewProps) {
-  const { type, easing, duration, distance, scale, blur, stiffness, damping, staggerDelay } =
-    settings;
+  const {
+    type,
+    easing,
+    duration,
+    distance,
+    scale,
+    blur,
+    stiffness,
+    damping,
+    staggerDelay,
+  } = settings;
 
   // Toggle para mostrar/ocultar
   const [isOpen, setIsOpen] = useState(true);
@@ -90,7 +99,15 @@ export function CodePreview({ settings }: CodePreviewProps) {
   };
 
   //默认值
-  const DEFAULTS = { direction: "up", distance: 40, duration: 0.5, scale: 1, blur: 0, stiffness: 100, damping: 14 };
+  const DEFAULTS = {
+    direction: "up",
+    distance: 40,
+    duration: 0.5,
+    scale: 1,
+    blur: 0,
+    stiffness: 100,
+    damping: 14,
+  };
 
   const isCustomSpring = easing === "custom";
   const direction = directionMap[type] || "up";
@@ -99,74 +116,71 @@ export function CodePreview({ settings }: CodePreviewProps) {
 
   const isNone = type === "fade";
 
-  // Helper para generar props opcionales
-  const buildFadeProps = (opts: { isSpring: boolean; excludeDistance?: boolean }) => {
-    const props: string[] = [];
-    if (opts.excludeDistance || isNone) {
-    } else if (distance !== DEFAULTS.distance) {
-      props.push(`  distance: ${distance}`);
-    }
-    if (opts.isSpring) {
-      if (stiffness !== DEFAULTS.stiffness) props.push(`  stiffness: ${stiffness}`);
-      if (damping !== DEFAULTS.damping) props.push(`  damping: ${damping}`);
-    } else {
-      if (duration !== DEFAULTS.duration) props.push(`  duration: ${duration}`);
-      if (easeValue !== "easeOut") props.push(`  ease: "${easeValue}"`);
-    }
-    if (scale !== DEFAULTS.scale) props.push(`  scale: ${scale}`);
-    if (blur !== DEFAULTS.blur) props.push(`  blur: ${blur}`);
-    if (props.length === 0) return "fade()";
-    return `fade({\n${props.join(",\n")}\n})`;
-  };
-
-  const fadeWithProps = buildFadeProps({ isSpring: isCustomSpring, excludeDistance: isNone });
-  const fadeWithPropsNoExclude = buildFadeProps({ isSpring: isCustomSpring, excludeDistance: false });
-
   // Código copiable (string simple)
   const generatedCode = isCustomSpring
-    ? `const parentVariants = {
-  initial: { opacity: 0 },
-  animate: {
-    opacity: 1,
-    transition: {
-      delayChildren: ${staggerValue},
-      staggerChildren: ${staggerValue}
+    ? `
+
+<motion.div variants={parentVariants({ delayChildren: ${staggerValue} })}>
+  <motion.div variants={fade({
+    direction: "${direction}",
+    ${
+      isCustomSpring
+        ? `stiffness: ${stiffness},
+    damping: ${damping}`
+        : `duration: ${duration},
+    ease: "${easeValue}"`
     }
-  }
-};
-
-const childVariants = ${fadeWithPropsNoExclude.replace("fade({", "fade({\n  direction: \"" + direction + "\",")};
-
-<motion.div variants={parentVariants}>
-  <motion.div variants={childVariants}>
+  })}>
     {/* children */}
   </motion.div>
 </motion.div>`
-    : `const parentVariants = {
-  initial: { opacity: 0 },
-  animate: {
-    opacity: 1,
-    transition: {
-      delayChildren: ${staggerValue},
-      staggerChildren: ${staggerValue}
+    : `
+
+<motion.div variants={parentVariants({ stagger: ${staggerValue} })}>
+  <motion.div variants={fade({
+    direction: "${direction}",
+    ${
+      isCustomSpring
+        ? `stiffness: ${stiffness},
+    damping: ${damping}`
+        : `duration: ${duration},
+    ease: "${easeValue}"`
     }
-  }
-};
-
-const childVariants = ${fadeWithPropsNoExclude.replace("fade({", "fade({\n  direction: \"" + direction + "\",")};
-
-<motion.div variants={parentVariants}>
-  <motion.div variants={childVariants}>
+  })}>
     {/* children */}
   </motion.div>
 </motion.div>`;
 
   // Código simple sin stagger
   const simpleCode = isCustomSpring
-    ? `<motion.div variants=${fadeWithProps.replace("fade({", "fade({\n  direction: \"" + direction + "\",")}>
+    ? `import { fade } from "@blaze-motion/motion";
+import { motion } from "motion/react";
+
+<motion.div variants={fade({
+  direction: "${direction}",
+  ${
+    isCustomSpring
+      ? `stiffness: ${stiffness},
+  damping: ${damping}`
+      : `duration: ${duration},
+  ease: "${easeValue}"`
+  }
+})}>
   {/* children */}
 </motion.div>`
-    : `<motion.div variants=${fadeWithProps.replace("fade({", "fade({\n  direction: \"" + direction + "\",")}>
+    : `import { fade } from "@blaze-motion/motion";
+import { motion } from "motion/react";
+
+<motion.div variants={fade({
+  direction: "${direction}",
+  ${
+    isCustomSpring
+      ? `stiffness: ${stiffness},
+  damping: ${damping}`
+      : `duration: ${duration},
+  ease: "${easeValue}"`
+  }
+})}>
   {/* children */}
 </motion.div>`;
 
@@ -190,8 +204,12 @@ const childVariants = ${fadeWithPropsNoExclude.replace("fade({", "fade({\n  dire
       <>
         <span className={C.propName}>direction</span>
         <span>: </span>
-        <span className={C.string}>{"\""}{direction}{"\""}</span>
-      </>
+        <span className={C.string}>
+          {'"'}
+          {direction}
+          {'"'}
+        </span>
+      </>,
     );
     if (!isNone && distance !== DEFAULTS.distance) {
       items.push(
@@ -199,7 +217,7 @@ const childVariants = ${fadeWithPropsNoExclude.replace("fade({", "fade({\n  dire
           <span className={C.propName}>distance</span>
           <span>: </span>
           {n(distance)}
-        </>
+        </>,
       );
     }
     if (isCustomSpring) {
@@ -209,10 +227,21 @@ const childVariants = ${fadeWithPropsNoExclude.replace("fade({", "fade({\n  dire
             <span className={C.propName}>spring</span>
             <span>: </span>
             {B(1).open}
-            {stiffness !== DEFAULTS.stiffness && <><span> stiffness: </span>{n(stiffness)}{damping !== DEFAULTS.damping && <span>, </span>}</>}
-            {damping !== DEFAULTS.damping && <><span> damping: </span>{n(damping)}</>}
+            {stiffness !== DEFAULTS.stiffness && (
+              <>
+                <span> stiffness: </span>
+                {n(stiffness)}
+                {damping !== DEFAULTS.damping && <span>, </span>}
+              </>
+            )}
+            {damping !== DEFAULTS.damping && (
+              <>
+                <span> damping: </span>
+                {n(damping)}
+              </>
+            )}
             {B(1).close}
-          </>
+          </>,
         );
       }
     } else {
@@ -222,7 +251,7 @@ const childVariants = ${fadeWithPropsNoExclude.replace("fade({", "fade({\n  dire
             <span className={C.propName}>duration</span>
             <span>: </span>
             {n(duration)}
-          </>
+          </>,
         );
       }
       if (easeValue !== "easeOut") {
@@ -230,8 +259,12 @@ const childVariants = ${fadeWithPropsNoExclude.replace("fade({", "fade({\n  dire
           <>
             <span className={C.propName}>ease</span>
             <span>: </span>
-            <span className={C.string}>{"\""}{easeValue}{"\""}</span>
-          </>
+            <span className={C.string}>
+              {'"'}
+              {easeValue}
+              {'"'}
+            </span>
+          </>,
         );
       }
     }
@@ -241,7 +274,7 @@ const childVariants = ${fadeWithPropsNoExclude.replace("fade({", "fade({\n  dire
           <span className={C.propName}>scale</span>
           <span>: </span>
           {n(scale)}
-        </>
+        </>,
       );
     }
     if (blur !== DEFAULTS.blur) {
@@ -250,7 +283,7 @@ const childVariants = ${fadeWithPropsNoExclude.replace("fade({", "fade({\n  dire
           <span className={C.propName}>blur</span>
           <span>: </span>
           {n(blur)}
-        </>
+        </>,
       );
     }
     if (withExcludeDelay) {
@@ -259,7 +292,7 @@ const childVariants = ${fadeWithPropsNoExclude.replace("fade({", "fade({\n  dire
           <span className={C.propName}>excludeDelay</span>
           <span>: </span>
           <span className={C.prop}>true</span>
-        </>
+        </>,
       );
     }
 
@@ -294,69 +327,18 @@ const childVariants = ${fadeWithPropsNoExclude.replace("fade({", "fade({\n  dire
     if (staggerDelay?.enabled) {
       return (
         <>
-          {/* PARENT VARIANTS */}
-          {s(C.keyword, "const")} {v("parentVariants")} {s(C.assign, "=")}{" "}
-          {B(0).open}
-          <br />
-          <span> </span>
-          <span className={C.propName}>initial</span>
-          <span>: </span>
-          {B(1).open}
-          <span className={C.propName}> opacity: </span>
-          {n(0)}
-          {B(1).close}
-          <span>,</span>
-          <br />
-          <span> </span>
-          <span className={C.propName}>animate</span>
-          <span>: </span>
-          {B(1).open}
-          <br />
-          <span className={C.propName}> opacity: </span>
-          {n(1)}
-          <span>,</span>
-          <br />
-          <span> </span>
-          <span className={C.propName}>transition</span>
-          <span>: </span>
-          {B(2).open}
-          <br />
-          <span> </span>
-          <span className={C.propName}>delayChildren</span>
-          <span>: </span>
-          <span className={C.stagger}>stagger</span>
-          <span>(</span>
-          {n(staggerValue)}
-          <span>)</span>
-          <span>,</span>
-          <br />
-          <span> </span>
-          <span className={C.propName}>staggerChildren</span>
-          <span>: </span>
-          {n(staggerValue)}
-          <br />
-          <span> </span>
-          {B(2).close}
-          <br />
-          <span> </span>
-          {B(1).close}
-          <br />
-          {B(0).close}
-          <span>;</span>
-          <br />
-          <br />
-          {/* CHILD VARIANTS */}
-          {s(C.keyword, "const")} {v("childVariants")} {s(C.assign, "=")}{" "}
-          {renderFadeConfig(true)}
-          <span>;</span>
-          <br />
-          <br />
-          {/* RENDER */}
+          {/* PARENT */}
           <span>&lt;</span>
           {t("motion.div")} <span className={C.prop}>variants</span>
           <span className={C.assign}>=</span>
           {B(0).open}
-          {v("parentVariants")}
+          <span className={C.var}>parentVariants</span>
+          <span>(</span>
+          {B(1).open}
+          <span className={C.propName}> stagger: </span>
+          {n(staggerValue)}
+          {B(1).close}
+          <span>)</span>
           {B(0).close}
           <span>&gt;</span>
           <br />
@@ -365,7 +347,7 @@ const childVariants = ${fadeWithPropsNoExclude.replace("fade({", "fade({\n  dire
           {t("motion.div")} <span className={C.prop}>variants</span>
           <span className={C.assign}>=</span>
           {B(0).open}
-          {v("childVariants")}
+          {renderFadeConfig(true)}
           {B(0).close}
           <span>&gt;</span>
           <br />
@@ -406,7 +388,7 @@ const childVariants = ${fadeWithPropsNoExclude.replace("fade({", "fade({\n  dire
 
   // Render
   return (
-    <div className="absolute bottom-20 right-4 z-20 w-[420px] max-w-[calc(100vw-500px)]">
+    <div className="absolute bottom-20 right-4 z-20 w-[450px] max-w-[calc(100vw-500px)]">
       <div className="bg-neutral-900 border border-white/10 rounded-xl overflow-hidden shadow-2xl">
         {/* Header con toggle */}
         <button
@@ -437,7 +419,13 @@ const childVariants = ${fadeWithPropsNoExclude.replace("fade({", "fade({\n  dire
                 {/* Imports (no copiables) */}
                 <div className="px-4 py-3 border-t border-white/5 bg-white/2">
                   <pre className="text-xs text-white/30 font-mono leading-relaxed">
-                    {`// Animaciones predefinidas
+                    {staggerDelay?.enabled
+                      ? `// Animaciones predefinidas
+import { fade, parentVariants } from "@blaze-motion/motion";
+
+// Motion
+import { motion } from "motion/react";`
+                      : `// Animaciones predefinidas
 import { fade } from "@blaze-motion/motion";
 
 // Motion

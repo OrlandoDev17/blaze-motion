@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useRef } from "react";
-import { motion, type Easing, type Variants, stagger } from "motion/react";
-import { fade } from "@blaze-motion/motion";
+import { motion, type Easing, type Variants } from "motion/react";
+import { fade, parentVariants } from "@blaze-motion/motion";
 import { Play } from "lucide-react";
 import { CardContent } from "@playground/display/CardContent";
 import { CodePreview } from "@playground/display/CodePreview";
@@ -89,28 +89,11 @@ export function PlaygroundAnimation({ settings }: PlaygroundAnimationProps) {
   const isCustomSpring = easing === "custom";
   const direction = directionMap[type] || "up";
   const easeValue = easingMap[easing] || "easeOut";
+  const staggerValue = staggerDelay?.value || 0.1;
 
   // ==========================================================================
   // Variantes de animación
   // ==========================================================================
-
-  /**
-   * Variantes del contenedor padre.
-   * - delayChildren: retraso antes de que empiecen los hijos
-   * - staggerChildren: tiempo entre cada hijo
-   */
-  const staggerValue = staggerDelay?.value || 0.1;
-
-  const parentVariants: Variants = {
-    initial: { opacity: 0 },
-    animate: {
-      opacity: 1,
-      transition: {
-        delayChildren: stagger(staggerValue),
-        staggerChildren: staggerValue,
-      },
-    },
-  };
 
   /**
    * Variantes de las tarjetas hijas.
@@ -171,7 +154,7 @@ export function PlaygroundAnimation({ settings }: PlaygroundAnimationProps) {
       <div className="relative min-h-[400px] flex items-center justify-center">
         <motion.div
           key={`container-${animationKey}`}
-          variants={parentVariants}
+          variants={parentVariants({ delayChildren: staggerValue })}
           initial="initial"
           animate="animate"
           className={`gap-4 max-w-3xl ${staggerDelay?.enabled ? getGridClass(staggerDelay.count) : "flex items-center"}`}

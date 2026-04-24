@@ -22,7 +22,7 @@ export function PlaygroundContainer() {
             direction: "up",
             distance: 40,
             ease: "backOut",
-            delay: 2.8,
+            delay: 1.2,
           })}
           initial="initial"
           animate="animate"
@@ -35,7 +35,7 @@ export function PlaygroundContainer() {
             direction: "left",
             distance: 100,
             ease: "backOut",
-            delay: 2,
+            delay: 1,
           })}
           initial="initial"
           animate="animate"

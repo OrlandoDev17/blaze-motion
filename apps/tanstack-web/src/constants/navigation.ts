@@ -8,16 +8,16 @@ export const NAV_LINKS: NavLink[] = [
   {
     id: "playground",
     label: "Playground",
-    href: "#playground",
+    href: "/playground",
   },
   {
     id: "animations",
     label: "Animaciones",
-    href: "#animations",
+    href: "/animations",
   },
   {
     id: "docs",
     label: "Documentación",
-    href: "#docs",
+    href: "/docs",
   },
 ];
