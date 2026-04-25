@@ -36,7 +36,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body suppressHydrationWarning>
         <Header />
-        <div className="absolute inset-0 z-5 pointer-events-none overflow-hidden">
+        <div className="fixed inset-0 z-[-1] pointer-events-none">
           <ParticlesBackground className="opacity-30" />
         </div>
         {children}

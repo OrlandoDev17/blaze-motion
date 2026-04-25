@@ -9,7 +9,8 @@ import { ChevronDown, ChevronUp, Copy, Check } from "lucide-react";
 import type { AnimationStore } from "@blaze-motion/motion";
 
 interface CodePreviewProps {
-  settings: AnimationStore;
+  settings: any; // Using any or Partial<AnimationStore> to allow easy mocked usage
+  className?: string;
 }
 
 // =============================================================================
@@ -59,7 +60,7 @@ const n = (content: string | number) => s(C.value, String(content));
 // Componente principal
 // =============================================================================
 
-export function CodePreview({ settings }: CodePreviewProps) {
+export function CodePreview({ settings, className }: CodePreviewProps) {
   const {
     type,
     easing,
@@ -388,7 +389,7 @@ import { motion } from "motion/react";
 
   // Render
   return (
-    <div className="absolute bottom-20 right-4 z-20 w-[450px] max-w-[calc(100vw-500px)]">
+    <div className={className || "absolute bottom-20 right-4 z-20 w-[450px] max-w-[calc(100vw-500px)]"}>
       <div className="bg-neutral-900 border border-white/10 rounded-xl overflow-hidden shadow-2xl">
         {/* Header con toggle */}
         <button
