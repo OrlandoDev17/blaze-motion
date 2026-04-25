@@ -78,29 +78,22 @@ const variants = fade({
 });
 ```
 
-#### Con Stagger
+### `parentVariants(opciones?)`
+
+Crea variantes para un contenedor padre que coordina animaciones de elementos hijos en secuencia (stagger).
 
 ```tsx
-const parentVariants = {
-  initial: { opacity: 0 },
-  animate: {
-    opacity: 1,
-    transition: {
-      delayChildren: 0.3,
-      staggerChildren: 0.1,
-    },
-  },
-};
-
-const childVariants = fade({
-  direction: "up",
-  excludeDelay: true, // importante: evita que el delay de fade sobrescriba el stagger
-});
+import { parentVariants, fade } from "@blaze-motion/motion";
+import { motion } from "motion/react";
 
 return (
-  <motion.div variants={parentVariants}>
+  <motion.div
+    variants={parentVariants({ delayChildren: 0.3 })}
+    initial="initial"
+    animate="animate"
+  >
     {[1, 2, 3].map((i) => (
-      <motion.div key={i} variants={childVariants}>
+      <motion.div key={i} variants={fade({ excludeDelay: true })}>
         Item {i}
       </motion.div>
     ))}
@@ -108,7 +101,43 @@ return (
 );
 ```
 
-## Opciones
+### `<TextAnimate />`
+
+Componente listo para usar que anima texto dinámicamente palabra por palabra o carácter por carácter, con opciones para resaltar texto específico.
+
+```tsx
+import { TextAnimate } from "@blaze-motion/motion";
+
+export function Title() {
+  return (
+    <TextAnimate
+      text="Animaciones fluidas"
+      as="h1"
+      type="slideUp"
+      by="word"
+      duration={0.4}
+      startDelay={0.2}
+      highlight={["fluidas"]}
+      highlightClassName="text-pink-500 font-bold"
+    />
+  );
+}
+```
+
+#### Propiedades de `<TextAnimate />`
+
+| Prop                 | Tipo                                                                  | Por defecto   | Descripción                                                   |
+| -------------------- | --------------------------------------------------------------------- | ------------- | ------------------------------------------------------------- |
+| `text`               | `string`                                                              | **requerido** | Texto a animar                                                |
+| `as`                 | `keyof JSX.IntrinsicElements`                                         | `"p"`         | Elemento HTML contenedor                                      |
+| `type`               | `"blurIn" \| "slideUp" \| "slideDown" \| "slideLeft" \| "slideRight"` | `"slideUp"`   | Estilo visual de la animación                                 |
+| `by`                 | `"word" \| "letter"`                                                  | `"word"`      | Divide la animación por palabra o por letra                   |
+| `duration`           | `number`                                                              | `0.4`         | Duración individual de cada elemento animado                  |
+| `startDelay`         | `number`                                                              | `0`           | Retraso antes de que comience el efecto completo              |
+| `highlight`          | `string[]`                                                            | `[]`          | Lista de palabras a resaltar visualmente                      |
+| `highlightClassName` | `string`                                                              | `""`          | Clases aplicadas a las palabras que coincidan con `highlight` |
+
+## Opciones de `fade()`
 
 | Opción              | Tipo                                            | Por defecto         | Descripción                                   |
 | ------------------- | ----------------------------------------------- | ------------------- | --------------------------------------------- |

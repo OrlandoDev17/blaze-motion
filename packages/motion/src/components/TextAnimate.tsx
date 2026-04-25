@@ -44,7 +44,7 @@ export const TextAnimate = ({
   highlight = [],
   highlightClassName = "",
   ...props
-}: TextAnimateProps) => {
+}: TextAnimateProps): JSX.Element => {
   // 1. Decidimos la partición
   const items = by === "word" ? text.split(" ") : text.split("");
 
