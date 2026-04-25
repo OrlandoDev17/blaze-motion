@@ -1,7 +1,7 @@
-import { Code, Weight, Zap, CheckCircle2, LayoutGrid } from "lucide-react";
 import { FpsVisualizer } from "@/components/home/FpsVisualizer";
 import { CodePreview } from "@/components/playground/display/CodePreview";
 import { TextAnimate } from "@blaze-motion/motion";
+import { Icon } from "@iconify/react";
 
 export interface BentoCardConfig {
   id?: string;
@@ -17,7 +17,10 @@ export const BentoCards: BentoCardConfig[] = [
     animation: "right",
     content: (
       <div className="flex flex-col gap-2.5">
-        <Zap className=" text-radical-red-400 bg-radical-red-500/10 p-2 rounded-lg size-10" />
+        <Icon
+          icon="lucide:zap"
+          className="text-radical-red-400 bg-radical-red-500/10 p-2 rounded-lg size-10"
+        />
         <h3 className="text-2xl font-mono uppercase">60 FPS</h3>
         <p className="text-sm text-white/60 text-balance">
           Animaciones fluidas y sin tirones impulsadas por la potencia de{" "}
@@ -38,7 +41,10 @@ export const BentoCards: BentoCardConfig[] = [
     content: (
       <div className="flex flex-row items-center justify-between gap-6 h-full w-full">
         <div className="flex flex-col gap-2 max-w-xl">
-          <Weight className="text-selective-yellow-400 bg-selective-yellow-500/10 p-2 rounded-lg size-10" />
+          <Icon
+            icon="lucide:weight"
+            className="text-selective-yellow-400 bg-selective-yellow-500/10 p-2 rounded-lg size-10"
+          />
           <h3 className="text-3xl">Ultra Ligero</h3>
           <p className="text-sm text-white/60 text-balance">
             Construido directamente sobre <strong>@motion/react</strong> como
@@ -62,7 +68,7 @@ export const BentoCards: BentoCardConfig[] = [
       <div className="flex flex-col md:flex-row items-center justify-between gap-8 h-full">
         <div className="flex flex-col gap-4 max-w-sm">
           <div className="bg-dark-200/50 w-fit p-3 rounded-xl border border-white/5">
-            <Code className="text-radical-red-400 size-6" />
+            <Icon icon="lucide:code" className="text-radical-red-400 size-6" />
           </div>
           <h3 className="text-3xl font-medium tracking-tight mt-2">
             Fácil de <br />
@@ -74,11 +80,17 @@ export const BentoCards: BentoCardConfig[] = [
           </p>
           <ul className="flex flex-col gap-3 mt-4">
             <li className="flex items-center gap-2 text-sm text-white/70">
-              <CheckCircle2 className="size-4 text-radical-red-400 fill-radical-red-400/20" />
+              <Icon
+                icon="lucide:check-circle-2"
+                className="size-4 text-radical-red-400 fill-radical-red-400/20"
+              />
               Tipado estricto con TypeScript
             </li>
             <li className="flex items-center gap-2 text-sm text-white/70">
-              <CheckCircle2 className="size-4 text-radical-red-400 fill-radical-red-400/20" />
+              <Icon
+                icon="lucide:check-circle-2"
+                className="size-4 text-radical-red-400 fill-radical-red-400/20"
+              />
               Documentación completa
             </li>
           </ul>
@@ -106,7 +118,10 @@ export const BentoCards: BentoCardConfig[] = [
     content: (
       <div className="flex flex-col h-full gap-4">
         <div className="w-fit">
-          <LayoutGrid className="text-selective-yellow-400 bg-selective-yellow-500/10 p-2 rounded-lg size-10" />
+          <Icon
+            icon="lucide:layout-grid"
+            className="text-selective-yellow-400 bg-selective-yellow-500/10 p-2 rounded-lg size-10"
+          />
         </div>
         <div className="flex flex-col gap-2">
           <h3 className="text-2xl font-medium tracking-tight">

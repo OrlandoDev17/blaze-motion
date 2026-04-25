@@ -2,7 +2,7 @@ import { NAV_LINKS } from "@/constants/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { fade, parentVariants } from "@blaze-motion/motion";
-import { Github } from "lucide-react";
+import { Icon } from "@iconify/react";
 import { SearchBar } from "../common/SearchBar";
 import { Link } from "@tanstack/react-router";
 
@@ -102,7 +102,10 @@ export function Header() {
             href="https://github.com/OrlandoDev17/blaze-motion"
             target="_blank"
           >
-            <Github className="text-radical-red-400 hover:text-radical-red-600 hover:scale-105 transition-all duration-300" />
+            <Icon
+              icon="simple-icons:github"
+              className="size-7 text-radical-red-400 hover:text-radical-red-600 hover:scale-105 transition-all duration-300"
+            />
           </motion.a>
         </motion.aside>
       </div>
