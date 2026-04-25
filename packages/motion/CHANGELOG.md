@@ -5,6 +5,19 @@ Todos los cambios notables de este proyecto se documentarán en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adherisce a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2026-04-25
+
+### Añadido
+
+- **`<Marquee />`** - Nuevo componente para carruseles infinitos.
+- **`<TextAnimate />`** - Nuevo estilo de animación `"typeWriter"` con cursor parpadeante integrado.
+
+### Corregido
+
+- **`<Marquee />`** - Corregida la animación inversa (`direction="right"`) para lograr un bucle infinito perfecto sin huecos en blanco y restaurado el `overflow-hidden`.
+- **`<TextAnimate />`** - Corregido error de tipado estricto en el easing (`"steps(2)"`) del cursor reemplazándolo por tiempos explícitos.
+- **`<TextAnimate />`** - Solucionado un problema donde la propiedad `highlight` no funcionaba correctamente al usar el modo `by="letter"`.
+
 ## [1.3.0] - 2026-04-25
 
 ### Añadido

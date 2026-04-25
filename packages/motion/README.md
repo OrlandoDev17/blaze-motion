@@ -130,12 +130,41 @@ export function Title() {
 | -------------------- | --------------------------------------------------------------------- | ------------- | ------------------------------------------------------------- |
 | `text`               | `string`                                                              | **requerido** | Texto a animar                                                |
 | `as`                 | `keyof JSX.IntrinsicElements`                                         | `"p"`         | Elemento HTML contenedor                                      |
-| `type`               | `"blurIn" \| "slideUp" \| "slideDown" \| "slideLeft" \| "slideRight"` | `"slideUp"`   | Estilo visual de la animación                                 |
+| `type`               | `"blurIn" \| "slideUp" \| "slideDown" \| "slideLeft" \| "slideRight" \| "typeWriter"` | `"slideUp"`   | Estilo visual de la animación                                 |
 | `by`                 | `"word" \| "letter"`                                                  | `"word"`      | Divide la animación por palabra o por letra                   |
 | `duration`           | `number`                                                              | `0.4`         | Duración individual de cada elemento animado                  |
 | `startDelay`         | `number`                                                              | `0`           | Retraso antes de que comience el efecto completo              |
 | `highlight`          | `string[]`                                                            | `[]`          | Lista de palabras a resaltar visualmente                      |
 | `highlightClassName` | `string`                                                              | `""`          | Clases aplicadas a las palabras que coincidan con `highlight` |
+
+## `<Marquee />`
+
+Componente para crear un carrusel de desplazamiento infinito y fluido, ideal para mostrar tecnologías, clientes o testimonios.
+
+```tsx
+import { Marquee } from "@blaze-motion/motion";
+
+export function TechStack() {
+  return (
+    <Marquee direction="left" speed={20} pauseOnHover={true} gap="2rem">
+      <div className="w-16 h-16 bg-blue-500 rounded-xl" />
+      <div className="w-16 h-16 bg-red-500 rounded-xl" />
+      <div className="w-16 h-16 bg-green-500 rounded-xl" />
+    </Marquee>
+  );
+}
+```
+
+#### Propiedades de `<Marquee />`
+
+| Prop           | Tipo                   | Por defecto | Descripción                                              |
+| -------------- | ---------------------- | ----------- | -------------------------------------------------------- |
+| `children`     | `ReactNode`            | **req**     | Elementos a renderizar dentro del carrusel               |
+| `direction`    | `"left" \| "right"`    | `"left"`    | Dirección del desplazamiento                             |
+| `speed`        | `number`               | `20`        | Tiempo en segundos que tarda en dar una vuelta (menor=más rápido) |
+| `pauseOnHover` | `boolean`              | `true`      | Pausar la animación cuando el mouse está encima          |
+| `gap`          | `string`               | `"2rem"`    | Espaciado entre elementos                                |
+| `className`    | `string`               | `""`        | Clases CSS adicionales (ej. para padding vertical)       |
 
 ## Opciones de `fade()`
 

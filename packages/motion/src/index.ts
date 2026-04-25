@@ -1,4 +1,10 @@
+// Schemas
+export * from "../schemas/animation";
+
+// Presets
 export * from "./presets/fade";
 export * from "./presets/parentVariants";
-export * from "../schemas/animation";
+
+// Components
 export * from "./components/TextAnimate";
+export * from "./components/Marquee";

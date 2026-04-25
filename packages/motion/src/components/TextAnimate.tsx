@@ -9,7 +9,8 @@ type AnimationType =
   | "slideUp"
   | "slideDown"
   | "slideLeft"
-  | "slideRight";
+  | "slideRight"
+  | "typeWriter";
 
 interface TextAnimateProps extends HTMLMotionProps<any> {
   // Obligatorias
@@ -57,6 +58,8 @@ export const TextAnimate = ({
         return { direction: "up", distance: 20, blur: 4 };
       case "slideDown":
         return { direction: "down", distance: 20, blur: 4 };
+      case "typeWriter":
+        return { direction: "none" as any, distance: 0, blur: 0 };
       default:
         return { direction: "up", distance: 10, blur: 4 };
     }
@@ -64,9 +67,28 @@ export const TextAnimate = ({
 
   const MotionComponent = motion.create(Component as any);
 
+  const highlightRanges: [number, number][] = [];
+  if (by === "letter" && highlight.length > 0) {
+    const lowerText = text.toLowerCase();
+    highlight.forEach((h) => {
+      if (!h) return;
+      const lowerH = h.toLowerCase();
+      let startIndex = 0;
+      while (startIndex < lowerText.length) {
+        const index = lowerText.indexOf(lowerH, startIndex);
+        if (index === -1) break;
+        highlightRanges.push([index, index + lowerH.length]);
+        startIndex = index + lowerH.length;
+      }
+    });
+  }
+
   return (
     <MotionComponent
-      variants={parentVariants({ delayChildren: 0.08, startDelay: startDelay })}
+      variants={parentVariants({
+        delayChildren: type === "typeWriter" && by === "letter" ? 0.05 : 0.08,
+        startDelay: startDelay,
+      })}
       initial="initial"
       whileInView="animate"
       viewport={{ once: true }}
@@ -74,9 +96,16 @@ export const TextAnimate = ({
       {...props}
     >
       {items.map((item, i) => {
-        const isHighlighted = highlight.some((h) =>
-          item.toLowerCase().includes(h.toLowerCase()),
-        );
+        let isHighlighted = false;
+        if (by === "word") {
+          isHighlighted = highlight.some((h) =>
+            item.toLowerCase().includes(h.toLowerCase()),
+          );
+        } else {
+          isHighlighted = highlightRanges.some(
+            ([start, end]) => i >= start && i < end,
+          );
+        }
 
         return (
           <motion.span
@@ -84,16 +113,16 @@ export const TextAnimate = ({
             variants={fade({
               ...getVariantProps(),
               excludeDelay: true,
-              duration: duration,
+              duration: type === "typeWriter" ? 0.05 : duration,
             })}
             className={isHighlighted ? highlightClassName : ""}
             style={{
               display: "inline-block",
-              whiteSpace: by === "letter" ? "pre" : "normal",
+              whiteSpace: "pre-wrap",
               marginRight: by === "word" ? "0.25em" : "0",
             }}
           >
-            {item}
+            {item === "" ? "\u00A0" : item}
           </motion.span>
         );
       })}
