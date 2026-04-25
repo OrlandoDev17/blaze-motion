@@ -2,10 +2,13 @@ import { NAV_LINKS } from "@/constants/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { fade, parentVariants } from "@blaze-motion/motion";
+import { Github } from "lucide-react";
+import { SearchBar } from "../common/SearchBar";
+import { Link } from "@tanstack/react-router";
 
 export function Header() {
-  const [hoveredTab, setHoveredTab] = useState<string | null>("#playground");
-  const [activeTab, setActiveTab] = useState<string | null>("#playground");
+  const [hoveredTab, setHoveredTab] = useState<string | null>("/");
+  const [activeTab, setActiveTab] = useState<string | null>("/");
 
   const handleTab = (href: string) => {
     setActiveTab(href);
@@ -13,12 +16,12 @@ export function Header() {
 
   return (
     <motion.header
-      variants={parentVariants({ stagger: 0.15 })}
+      variants={parentVariants({ delayChildren: 0.25 })}
       initial="initial"
       animate="animate"
-      className="flex items-center justify-between px-8 bg-dark-100 h-16"
+      className="fixed top-0 left-0 right-0 z-100 flex items-center justify-between gap-6 max-w-7xl px-8 mx-auto bg-dark-100/70 backdrop-blur-md h-12 2xl:h-16 border-b-2 border-white/10"
     >
-      <div className="flex-1">
+      <div>
         <motion.h2
           variants={fade({
             direction: "right",
@@ -26,14 +29,14 @@ export function Header() {
             ease: "backOut",
             excludeDelay: true,
           })}
-          className="text-radical-red-300 text-2xl font-semibold tracking-wide"
+          className="bg-linear-to-r from-radical-red-600 to-radical-red-300 bg-clip-text text-transparent text-2xl font-semibold tracking-wide"
         >
           BlazeMotion
         </motion.h2>
       </div>
       <motion.ul
-variants={parentVariants({ stagger: 0.15 })}
-      className="flex items-center gap-4"
+        variants={parentVariants({ delayChildren: 0.15 })}
+        className="flex items-center gap-2 2xl:gap-4"
       >
         {NAV_LINKS.map(({ id, label, href }) => (
           <motion.li
@@ -46,12 +49,12 @@ variants={parentVariants({ stagger: 0.15 })}
             className="relative"
             key={id}
           >
-            <a
+            <Link
               onMouseEnter={() => setHoveredTab(href)}
               onMouseLeave={() => setHoveredTab(null)}
               onClick={() => handleTab(href)}
-              className={`text-lg text-neutral-300 font-medium px-2 hover:text-radical-red-300 transition-all duration-300 ${activeTab === href ? "text-radical-red-300" : ""}`}
-              href={href}
+              className={`text-base 2xl:text-lg text-neutral-300 px-2 hover:text-radical-red-400 transition-all duration-300 ${activeTab === href ? "text-radical-red-400 font-medium" : "hover:font-medium"}`}
+              to={href}
             >
               {label}
               <AnimatePresence>
@@ -70,26 +73,37 @@ variants={parentVariants({ stagger: 0.15 })}
                   />
                 )}
               </AnimatePresence>
-            </a>
+            </Link>
           </motion.li>
         ))}
       </motion.ul>
-      <motion.div
-        variants={fade({
-          direction: "left",
-          distance: 20,
-          ease: "backOut",
-          delay: 0.7,
-        })}
-        className="flex-1 flex items-center justify-end"
+      <motion.aside
+        variants={parentVariants({ delayChildren: 0.15 })}
+        className="flex-1 flex items-center gap-4 justify-end"
       >
-        <a
-          className="font-mono font-medium bg-dark-200 px-4 py-2 rounded-md shadow-inner shadow-white/20 hover:shadow-inner hover:shadow-white/30 hover:-translate-y-1 transition-all duration-300"
-          href="https://github.com/OrlandoDev17/blaze-motion"
+        <motion.div
+          variants={fade({
+            direction: "down",
+            distance: 20,
+            ease: "backOut",
+            excludeDelay: true,
+          })}
         >
-          Github
-        </a>
-      </motion.div>
+          <SearchBar />
+        </motion.div>
+        <motion.a
+          variants={fade({
+            direction: "left",
+            distance: 20,
+            ease: "backOut",
+            excludeDelay: true,
+          })}
+          href="https://github.com/OrlandoDev17/blaze-motion"
+          target="_blank"
+        >
+          <Github className="text-radical-red-400 hover:text-radical-red-600 hover:scale-105 transition-all duration-300" />
+        </motion.a>
+      </motion.aside>
     </motion.header>
   );
 }

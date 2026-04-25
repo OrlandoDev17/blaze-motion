@@ -1,32 +1,32 @@
-import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
+import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router";
 
-
-import appCss from '@/styles.css?url'
-import { Header } from '@/components/layout/Header'
+import appCss from "@/styles.css?url";
+import { Header } from "@/components/layout/Header";
+import { ParticlesBackground } from "#/components/playground/display/ParticlesBackground";
 
 export const Route = createRootRoute({
   head: () => ({
     meta: [
       {
-        charSet: 'utf-8',
+        charSet: "utf-8",
       },
       {
-        name: 'viewport',
-        content: 'width=device-width, initial-scale=1',
+        name: "viewport",
+        content: "width=device-width, initial-scale=1",
       },
       {
-        title: 'Blaze Motion | Libreria de Animaciones con Framer Motion',
+        title: "Blaze Motion | Libreria de Animaciones con Framer Motion",
       },
     ],
     links: [
       {
-        rel: 'stylesheet',
+        rel: "stylesheet",
         href: appCss,
       },
     ],
   }),
   shellComponent: RootDocument,
-})
+});
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
@@ -36,9 +36,12 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body suppressHydrationWarning>
         <Header />
+        <div className="absolute inset-0 z-5 pointer-events-none overflow-hidden">
+          <ParticlesBackground className="opacity-30" />
+        </div>
         {children}
         <Scripts />
       </body>
     </html>
-  )
+  );
 }

@@ -53,36 +53,42 @@
   --color-dark-200: #1a1617;
 }
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 * {
   box-sizing: border-box;
+}
+
+/* Global Scrollbar Styles */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-radical-red-600) var(--color-dark-50);
+  height: 100%;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
 }
 
 body {
   font-family: var(--font-sans);
   background-color: var(--color-dark-50);
   color: #fff;
-}
-
-.snap-container {
-  display: block; /* Aseguramos que sea bloque */
-  height: calc(100dvh - 4rem);
-  width: 100%;
-  overflow-y: scroll;
-  scroll-snap-type: y mandatory;
-  outline: none; /* Evita bordes molestos al hacer focus */
+  min-height: 100%;
+  overflow: visible;
 }
 
 /* Scrollbar para Chrome/Safari */
-.snap-container::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 
-.snap-container::-webkit-scrollbar-track {
-  background: #1a1617;
+::-webkit-scrollbar-track {
+  background: var(--color-dark-50);
 }
 
-.snap-container::-webkit-scrollbar-thumb {
-  background-color: #ff0055;
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-radical-red-600);
   border-radius: 20px;
 }
 

@@ -40,9 +40,11 @@ export function PropertyInspector() {
     updateAnimation({ easing: value });
 
   return (
-    <aside className="w-md 2xl:w-lg bg-dark-200 flex flex-col h-full border-l border-selective-yellow-600/30 shrink-0 shadow-lg">
-      <header className="flex items-center justify-between border-b border-slate-600/30 px-6 py-6">
-        <h2 className="text-xl font-bold">Inspector de propiedades</h2>
+    <aside className="w-full max-w-[400px] 2xl:max-w-lg bg-dark-200 flex flex-col h-full border-l border-selective-yellow-600/30 shrink-0 shadow-lg">
+      <header className="flex items-center justify-between gap-2 border-b border-slate-600/30 px-6 py-6">
+        <h2 className="text-base 2xl:text-xl font-bold">
+          Inspector de propiedades
+        </h2>
         <button
           type="button"
           onClick={resetAnimation}
