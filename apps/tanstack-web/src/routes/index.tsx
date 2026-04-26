@@ -9,7 +9,7 @@ function App() {
   return (
     <main className="flex flex-col min-h-dvh relative z-10 justify-center items-center max-w-7xl mx-auto w-full px-8">
       <Hero />
-      <div className="flex flex-col gap-36">
+      <div className="flex flex-col gap-36 flex-1">
         <Features />
         <TechStack />
       </div>

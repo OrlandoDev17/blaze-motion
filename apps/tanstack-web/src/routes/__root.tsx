@@ -3,6 +3,7 @@ import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router";
 import appCss from "@/styles.css?url";
 import { Header } from "@/components/layout/Header";
 import { ParticlesBackground } from "#/components/playground/display/ParticlesBackground";
+import { Footer } from "#/components/layout/Footer";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -40,6 +41,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           <ParticlesBackground className="opacity-30" />
         </div>
         {children}
+        <Footer />
         <Scripts />
       </body>
     </html>
