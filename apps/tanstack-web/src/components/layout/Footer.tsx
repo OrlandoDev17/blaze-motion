@@ -63,7 +63,7 @@ const FOOTER_LINKS: FooterLinksProps[] = [
 
 export function Footer() {
   return (
-    <footer className="max-h-96 h-full w-full border-t-2 border-white/5 max-w-7xl mx-auto px-8">
+    <footer className="max-h-96 w-full border-t-2 border-white/5 max-w-7xl mx-auto px-8">
       <motion.div
         initial="initial"
         whileInView="animate"

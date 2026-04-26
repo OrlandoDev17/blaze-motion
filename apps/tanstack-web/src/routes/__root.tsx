@@ -35,12 +35,14 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body suppressHydrationWarning>
+      <body suppressHydrationWarning className="min-h-dvh flex flex-col">
         <Header />
         <div className="fixed inset-0 z-[-1] pointer-events-none">
           <ParticlesBackground className="opacity-30" />
         </div>
-        {children}
+        <div className="flex-1 flex flex-col pt-12 2xl:pt-16">
+          {children}
+        </div>
         <Footer />
         <Scripts />
       </body>
