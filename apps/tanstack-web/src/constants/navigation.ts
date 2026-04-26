@@ -11,19 +11,24 @@ export interface NavLink {
 
 export const NAV_LINKS: NavLink[] = [
   {
+    id: "home",
+    label: "Inicio",
+    href: "/",
+  },
+  {
     id: "docs",
     label: "Docs",
-    href: "/",
+    href: "/docs",
   },
   {
     id: "components",
     label: "Componentes",
-    href: "/components",
+    href: "/docs/components",
   },
   {
     id: "presets",
     label: "Presets",
-    href: "/presets",
+    href: "/docs/presets",
   },
   {
     id: "playground",
