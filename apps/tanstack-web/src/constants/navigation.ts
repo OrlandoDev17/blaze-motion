@@ -1,15 +1,12 @@
-import { Sparkle } from "lucide-react";
-import type { ComponentType } from "react";
-
 export interface NavLink {
   id: string;
   label: string;
-  href: string;
-  icon?: ComponentType;
+  href?: string;
+  icon?: string;
   subLinks?: NavLink[];
 }
 
-export const NAV_LINKS: NavLink[] = [
+const NAV_LINKS: NavLink[] = [
   {
     id: "home",
     label: "Inicio",
@@ -18,7 +15,7 @@ export const NAV_LINKS: NavLink[] = [
   {
     id: "docs",
     label: "Docs",
-    href: "/docs",
+    href: "/docs/introduction",
   },
   {
     id: "components",
@@ -37,12 +34,11 @@ export const NAV_LINKS: NavLink[] = [
   },
 ];
 
-export const SIDEBAR_LINKS: NavLink[] = [
+const SIDEBAR_LINKS: NavLink[] = [
   {
     id: "getting-started",
     label: "Primeros Pasos",
-    href: "#getting-started",
-    icon: Sparkle,
+    icon: "lucide:sparkle",
     subLinks: [
       {
         id: "introduction",
@@ -56,4 +52,40 @@ export const SIDEBAR_LINKS: NavLink[] = [
       },
     ],
   },
+  {
+    id: "presets",
+    label: "Presets",
+    icon: "lucide:layout-dashboard",
+    subLinks: [
+      {
+        id: "fade",
+        label: "Fade",
+        href: "/docs/presets/fade",
+      },
+      {
+        id: "parent-variants",
+        label: "Parent Variants",
+        href: "/docs/presets/parent-variants",
+      },
+    ],
+  },
+  {
+    id: "components",
+    label: "Componentes",
+    icon: "lucide:layout-grid",
+    subLinks: [
+      {
+        id: "text-animate",
+        label: "Text Animate",
+        href: "/docs/components/text-animate",
+      },
+      {
+        id: "marquee",
+        label: "Marquee",
+        href: "/docs/components/marquee",
+      },
+    ],
+  },
 ];
+
+export { NAV_LINKS, SIDEBAR_LINKS };

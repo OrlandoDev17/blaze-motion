@@ -3,7 +3,6 @@ import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router";
 import appCss from "@/styles.css?url";
 import { Header } from "@/components/layout/Header";
 import { ParticlesBackground } from "#/components/playground/display/ParticlesBackground";
-import { Footer } from "#/components/layout/Footer";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -40,10 +39,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <div className="fixed inset-0 z-[-1] pointer-events-none">
           <ParticlesBackground className="opacity-30" />
         </div>
-        <div className="flex-1 flex flex-col pt-12 2xl:pt-16">
-          {children}
-        </div>
-        <Footer />
+        <div className="flex-1 flex flex-col pt-12 2xl:pt-16">{children}</div>
         <Scripts />
       </body>
     </html>

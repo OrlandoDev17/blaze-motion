@@ -1,6 +1,7 @@
 import { TechStack } from "#/components/home/sections/TechStack";
 import { Features } from "@/components/home/sections/Features";
 import { Hero } from "@/components/home/sections/Hero";
+import { Footer } from "#/components/layout/Footer";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({ component: App });
@@ -13,6 +14,7 @@ function App() {
         <Features />
         <TechStack />
       </div>
+      <Footer />
     </main>
   );
 }
