@@ -63,13 +63,13 @@ const FOOTER_LINKS: FooterLinksProps[] = [
 
 export function Footer() {
   return (
-    <footer className="fixed bottom-0 left-0 right-0 w-full border-t-2 border-white/5 bg-dark-100/70 backdrop-blur-md">
+    <footer className="flex justify-center w-full border-t-2 border-white/5 bg-dark-100/70">
       <motion.div
         initial="initial"
         whileInView="animate"
         viewport={{ once: true, amount: 0.6 }}
         variants={parentVariants({ delayChildren: 0.15, startDelay: 0.5 })}
-        className="grid grid-cols-4 gap-6 py-8 max-w-7xl mx-auto px-8"
+        className="grid grid-cols-4 gap-6 py-8 w-full max-w-7xl mx-auto px-8"
       >
         <motion.div variants={parentVariants()} className="flex flex-col gap-4">
           <motion.h3
