@@ -1,22 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { DocPage } from "@/components/docs/DocPage";
-import { introductionData } from "@/data/docs/introduction";
+import { installationData } from "@/data/docs/installation";
 
-export const Route = createFileRoute("/docs/introduction")({
+export const Route = createFileRoute("/docs/installation")({
   component: RouteComponent,
   head: () => ({
     meta: [
       {
         name: "description",
-        content: introductionData.description,
+        content: installationData.description,
       },
       {
         property: "og:title",
-        content: `${introductionData.title} | Blaze Motion Docs`,
+        content: `${installationData.title} | Blaze Motion Docs`,
       },
       {
         property: "og:description",
-        content: introductionData.description,
+        content: installationData.description,
       },
       {
         property: "og:type",
@@ -27,7 +27,7 @@ export const Route = createFileRoute("/docs/introduction")({
 });
 
 function RouteComponent() {
-  return <DocPage data={introductionData} />;
+  return <DocPage data={installationData} />;
 }
 
 export default RouteComponent;

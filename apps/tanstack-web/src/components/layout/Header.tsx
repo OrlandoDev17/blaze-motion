@@ -4,14 +4,32 @@ import { useState } from "react";
 import { fade, parentVariants } from "@blaze-motion/motion";
 import { Icon } from "@iconify/react";
 import { SearchBar } from "../common/SearchBar";
-import { Link } from "@tanstack/react-router";
+import { Link, useLocation } from "@tanstack/react-router";
 
 export function Header() {
   const [hoveredTab, setHoveredTab] = useState<string | null>("/");
-  const [activeTab, setActiveTab] = useState<string | null>("/");
+  const location = useLocation();
 
-  const handleTab = (href: string) => {
-    setActiveTab(href);
+  const isActive = (href: string) => {
+    const pathname = location.pathname;
+
+    if (href === "/") {
+      return pathname === "/";
+    }
+
+    if (href === "/docs/introduction") {
+      return pathname.startsWith("/docs") && !pathname.startsWith("/docs/components") && !pathname.startsWith("/docs/presets");
+    }
+
+    if (href === "/docs/components") {
+      return pathname.startsWith("/docs/components");
+    }
+
+    if (href === "/docs/presets") {
+      return pathname.startsWith("/docs/presets");
+    }
+
+    return pathname.startsWith(href);
   };
 
   return (
@@ -53,8 +71,7 @@ export function Header() {
               <Link
                 onMouseEnter={() => setHoveredTab(href)}
                 onMouseLeave={() => setHoveredTab(null)}
-                onClick={() => handleTab(href)}
-                className={`text-base 2xl:text-lg text-neutral-300 px-2 hover:text-radical-red-400 transition-all duration-300 ${activeTab === href ? "text-radical-red-400 font-medium" : "hover:font-medium"}`}
+                className={`text-base 2xl:text-lg text-neutral-300 px-2 hover:text-radical-red-400 transition-all duration-300 ${isActive(href) ? "text-radical-red-400 font-medium" : "hover:font-medium"}`}
                 to={href}
               >
                 {label}

@@ -13,6 +13,7 @@ import { Route as PlaygroundRouteImport } from './routes/playground'
 import { Route as DocsRouteImport } from './routes/docs'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DocsIntroductionRouteImport } from './routes/docs/introduction'
+import { Route as DocsInstallationRouteImport } from './routes/docs/installation'
 
 const PlaygroundRoute = PlaygroundRouteImport.update({
   id: '/playground',
@@ -34,17 +35,24 @@ const DocsIntroductionRoute = DocsIntroductionRouteImport.update({
   path: '/introduction',
   getParentRoute: () => DocsRoute,
 } as any)
+const DocsInstallationRoute = DocsInstallationRouteImport.update({
+  id: '/installation',
+  path: '/installation',
+  getParentRoute: () => DocsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/docs': typeof DocsRouteWithChildren
   '/playground': typeof PlaygroundRoute
+  '/docs/installation': typeof DocsInstallationRoute
   '/docs/introduction': typeof DocsIntroductionRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/docs': typeof DocsRouteWithChildren
   '/playground': typeof PlaygroundRoute
+  '/docs/installation': typeof DocsInstallationRoute
   '/docs/introduction': typeof DocsIntroductionRoute
 }
 export interface FileRoutesById {
@@ -52,14 +60,31 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/docs': typeof DocsRouteWithChildren
   '/playground': typeof PlaygroundRoute
+  '/docs/installation': typeof DocsInstallationRoute
   '/docs/introduction': typeof DocsIntroductionRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/docs' | '/playground' | '/docs/introduction'
+  fullPaths:
+    | '/'
+    | '/docs'
+    | '/playground'
+    | '/docs/installation'
+    | '/docs/introduction'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/docs' | '/playground' | '/docs/introduction'
-  id: '__root__' | '/' | '/docs' | '/playground' | '/docs/introduction'
+  to:
+    | '/'
+    | '/docs'
+    | '/playground'
+    | '/docs/installation'
+    | '/docs/introduction'
+  id:
+    | '__root__'
+    | '/'
+    | '/docs'
+    | '/playground'
+    | '/docs/installation'
+    | '/docs/introduction'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -98,14 +123,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DocsIntroductionRouteImport
       parentRoute: typeof DocsRoute
     }
+    '/docs/installation': {
+      id: '/docs/installation'
+      path: '/installation'
+      fullPath: '/docs/installation'
+      preLoaderRoute: typeof DocsInstallationRouteImport
+      parentRoute: typeof DocsRoute
+    }
   }
 }
 
 interface DocsRouteChildren {
+  DocsInstallationRoute: typeof DocsInstallationRoute
   DocsIntroductionRoute: typeof DocsIntroductionRoute
 }
 
 const DocsRouteChildren: DocsRouteChildren = {
+  DocsInstallationRoute: DocsInstallationRoute,
   DocsIntroductionRoute: DocsIntroductionRoute,
 }
 
