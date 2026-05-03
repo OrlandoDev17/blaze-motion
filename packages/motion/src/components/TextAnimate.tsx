@@ -1,7 +1,26 @@
 import { fade } from "@/presets/fade";
 import { parentVariants } from "@/presets/parentVariants";
 import { motion, type HTMLMotionProps } from "motion/react";
-import type { JSX } from "react";
+import { useMemo, type JSX } from "react";
+
+const componentCache = new Map<string, ReturnType<typeof motion.create>>();
+
+const getMotionComponent = (component: keyof JSX.IntrinsicElements) => {
+  const key = String(component);
+  if (!componentCache.has(key)) {
+    const MotionComp = motion.create(component as any);
+    componentCache.set(key, MotionComp as any);
+  }
+  return componentCache.get(key)!;
+};
+
+const SPAN_STYLE = {
+  display: "inline-block",
+  whiteSpace: "pre-wrap",
+} as const;
+
+const WORD_STYLE = { ...SPAN_STYLE, marginRight: "0.25em" } as const;
+const LETTER_STYLE = { ...SPAN_STYLE, marginRight: "0" } as const;
 
 // Definimos los tipos de animación que quieres soportar
 type AnimationType =
@@ -30,65 +49,88 @@ interface TextAnimateProps extends HTMLMotionProps<any> {
 }
 
 export const TextAnimate = ({
-  // Obligatorias
   text,
-  // Semanticas
   as: Component = "p",
-  // Composicion
   by = "word",
   type = "slideUp",
-  // Props para la animacion
   startDelay = 0,
   duration = 0.4,
-  // Props para el diseño
   className,
   highlight = [],
   highlightClassName = "",
   ...props
 }: TextAnimateProps): JSX.Element => {
-  // 1. Decidimos la partición
-  const items = by === "word" ? text.split(" ") : text.split("");
+  const MotionComponent = useMemo(
+    () => getMotionComponent(Component),
+    [Component],
+  );
 
-  // 2. Mapeamos tu tipo de animación a las props de tu preset 'fade'
-  const getVariantProps = () => {
+  const items = useMemo(
+    () => (by === "word" ? text.split(" ") : text.split("")),
+    [by, text],
+  );
+
+  const variantProps = useMemo(() => {
     switch (type) {
       case "blurIn":
-        return { direction: "none" as any, distance: 0, blur: 8 };
+        return { direction: "none" as const, distance: 0, blur: 8 };
       case "slideUp":
-        return { direction: "up", distance: 20, blur: 4 };
+        return { direction: "up" as const, distance: 20, blur: 4 };
       case "slideDown":
-        return { direction: "down", distance: 20, blur: 4 };
+        return { direction: "down" as const, distance: 20, blur: 4 };
       case "typeWriter":
-        return { direction: "none" as any, distance: 0, blur: 0 };
+        return { direction: "none" as const, distance: 0, blur: 0 };
       default:
-        return { direction: "up", distance: 10, blur: 4 };
+        return { direction: "up" as const, distance: 10, blur: 4 };
     }
-  };
+  }, [type]);
 
-  const MotionComponent = motion.create(Component as any);
+  const parentVariant = useMemo(
+    () =>
+      parentVariants({
+        delayChildren:
+          type === "typeWriter" && by === "letter" ? 0.05 : 0.08,
+        startDelay,
+      }),
+    [type, by, startDelay],
+  );
 
-  const highlightRanges: [number, number][] = [];
-  if (by === "letter" && highlight.length > 0) {
+  const childVariant = useMemo(
+    () =>
+      fade({
+        ...variantProps,
+        excludeDelay: true,
+        duration: type === "typeWriter" ? 0.05 : duration,
+      }),
+    [variantProps, type, duration],
+  );
+
+  const highlightRanges = useMemo<[number, number][]>(() => {
+    if (by !== "letter" || highlight.length === 0) return [];
     const lowerText = text.toLowerCase();
-    highlight.forEach((h) => {
-      if (!h) return;
+    const ranges: [number, number][] = [];
+    for (const h of highlight) {
+      if (!h) continue;
       const lowerH = h.toLowerCase();
       let startIndex = 0;
       while (startIndex < lowerText.length) {
         const index = lowerText.indexOf(lowerH, startIndex);
         if (index === -1) break;
-        highlightRanges.push([index, index + lowerH.length]);
+        ranges.push([index, index + lowerH.length]);
         startIndex = index + lowerH.length;
       }
-    });
-  }
+    }
+    return ranges;
+  }, [by, highlight, text]);
+
+  const isWord = by === "word";
+  const itemStyle = isWord ? WORD_STYLE : LETTER_STYLE;
+
+  const MotionWrapper = MotionComponent as any;
 
   return (
-    <MotionComponent
-      variants={parentVariants({
-        delayChildren: type === "typeWriter" && by === "letter" ? 0.05 : 0.08,
-        startDelay: startDelay,
-      })}
+    <MotionWrapper
+      variants={parentVariant}
       initial="initial"
       whileInView="animate"
       viewport={{ once: true }}
@@ -96,36 +138,23 @@ export const TextAnimate = ({
       {...props}
     >
       {items.map((item, i) => {
-        let isHighlighted = false;
-        if (by === "word") {
-          isHighlighted = highlight.some((h) =>
-            item.toLowerCase().includes(h.toLowerCase()),
-          );
-        } else {
-          isHighlighted = highlightRanges.some(
-            ([start, end]) => i >= start && i < end,
-          );
-        }
+        const isHighlighted = isWord
+          ? highlight.some((h) =>
+              item.toLowerCase().includes(h.toLowerCase()),
+            )
+          : highlightRanges.some(([start, end]) => i >= start && i < end);
 
         return (
           <motion.span
             key={`${item}-${i}`}
-            variants={fade({
-              ...getVariantProps(),
-              excludeDelay: true,
-              duration: type === "typeWriter" ? 0.05 : duration,
-            })}
+            variants={childVariant}
             className={isHighlighted ? highlightClassName : ""}
-            style={{
-              display: "inline-block",
-              whiteSpace: "pre-wrap",
-              marginRight: by === "word" ? "0.25em" : "0",
-            }}
+            style={itemStyle}
           >
             {item === "" ? "\u00A0" : item}
           </motion.span>
         );
       })}
-    </MotionComponent>
+    </MotionWrapper>
   );
 };

@@ -5,6 +5,24 @@ Todos los cambios notables de este proyecto se documentarán en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adherisce a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.1] - 2026-05-03
+
+### Rendimiento
+
+- **`<TextAnimate />`** - Cache de componentes `motion.create()` para evitar recrear componentes en cada render.
+- **`<TextAnimate />`** - Memoización de variantes (`fade()`, `parentVariants()`) para evitar cálculos repetidos.
+- **`<TextAnimate />`** - Estilos extraídos como constantes para reducir asignaciones de memoria.
+- **`fade()`** - Añadido `will-change: transform, opacity, filter` para GPU acceleration.
+- **`fade()`** - Optimización de blur: solo se anima si está activo (blur > 0).
+- **`<Marquee />`** - CSS generado una sola vez por instancia usando `useMemo()`.
+- **`<Marquee />`** - Componente envuelto en `memo()` para evitar re-renders innecesarios.
+
+### Cambios
+
+- **Múltiples entry points** - Nuevas exportaciones para tree-shaking:
+  - `@blaze-motion/motion/presets` - Solo presets (fade, parentVariants)
+  - `@blaze-motion/motion/components` - Solo componentes (TextAnimate, Marquee)
+
 ## [1.4.0] - 2026-04-25
 
 ### Añadido

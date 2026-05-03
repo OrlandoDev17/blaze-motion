@@ -40,7 +40,6 @@ export const fade = (options: FadeProps = {}): Variants => {
     blur,
   } = validatedOptions;
 
-  // Define el desplazamiento inicial según la dirección
   const directions = {
     up: { y: distance, x: 0 },
     down: { y: -distance, x: 0 },
@@ -49,14 +48,6 @@ export const fade = (options: FadeProps = {}): Variants => {
     none: { x: 0, y: 0 },
   };
 
-  /**
-   * Construye la transición.
-   * - Si hay spring: usa física de resorte
-   * - Si no hay spring: usa duration + ease
-   *
-   * excludeDelay permite que el stagger del padre añada el delay.
-   * Sin esto, el delay: 0 de fade sobrescribiría el delay calculado por stagger.
-   */
   const baseTransition = spring
     ? { type: "spring" as const, ...spring }
     : { duration, ease: ease ?? [0.16, 1, 0.3, 1] };
@@ -65,19 +56,25 @@ export const fade = (options: FadeProps = {}): Variants => {
     ? baseTransition
     : { ...baseTransition, delay };
 
+  const blurFilter = blur > 0 ? `blur(${blur}px)` : undefined;
+  const shouldAnimateBlur = blur > 0;
+
   return {
     initial: {
       opacity: 0,
       ...directions[direction],
       scale: scale,
-      filter: `blur(${blur}px)`,
+      filter: blurFilter,
     },
     animate: {
       opacity: 1,
       x: 0,
       y: 0,
       scale: 1,
-      filter: "blur(0px)",
+      filter: shouldAnimateBlur ? "blur(0px)" : undefined,
+      willChange: shouldAnimateBlur
+        ? "transform, opacity, filter"
+        : "transform, opacity",
       transition,
     },
   } as unknown as Variants;

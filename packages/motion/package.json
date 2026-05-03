@@ -1,6 +1,6 @@
 {
   "name": "@blaze-motion/motion",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Preset de animaciones para motion/react",
   "homepage": "https://github.com/OrlandoDev17/blaze-motion",
   "repository": {
@@ -33,6 +33,26 @@
       "require": {
         "types": "./dist/index.d.cts",
         "default": "./dist/index.cjs"
+      }
+    },
+    "./presets": {
+      "import": {
+        "types": "./dist/presets/index.d.ts",
+        "default": "./dist/presets/index.js"
+      },
+      "require": {
+        "types": "./dist/presets/index.d.cts",
+        "default": "./dist/presets/index.cjs"
+      }
+    },
+    "./components": {
+      "import": {
+        "types": "./dist/components/index.d.ts",
+        "default": "./dist/components/index.js"
+      },
+      "require": {
+        "types": "./dist/components/index.d.cts",
+        "default": "./dist/components/index.cjs"
       }
     }
   },
