@@ -4,7 +4,7 @@ import { Icon } from "@iconify/react";
 
 export function Sidebar() {
   return (
-    <aside className="flex flex-col gap-6 fixed top-12 2xl:top-16 bottom-0 max-w-xs w-full bg-dark-100/70 backdrop-blur-md overflow-y-auto border-r-2 border-white/5 py-6">
+    <aside className="flex flex-col gap-6 fixed top-12 2xl:top-16 bottom-0 w-64 lg:w-56 md:w-48 left-0 bg-dark-100/70 backdrop-blur-md overflow-y-auto border-r-2 border-white/5 py-6 z-10">
       <header className="flex-col items-start flex gap-2 px-6">
         <h2 className="uppercase font-bold tracking-tight text-white">
           Documentación
@@ -32,7 +32,7 @@ export function Sidebar() {
                   <li key={link.id}>
                     <Link
                       to={link.href || "#"}
-                      className="flex items-center w-full px-6 py-2.5 text-[14.5px] transition-all border-r-2 font-medium tracking-wide"
+                      className="flex items-center w-full px-6 py-2.5 text-xs 2xl:text-sm transition-all border-r-2 font-medium tracking-wide"
                       inactiveProps={{
                         className:
                           "text-slate-400 border-transparent hover:text-slate-200 hover:bg-white/5",
