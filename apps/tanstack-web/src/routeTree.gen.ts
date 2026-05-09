@@ -14,6 +14,7 @@ import { Route as DocsRouteImport } from './routes/docs'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DocsIntroductionRouteImport } from './routes/docs/introduction'
 import { Route as DocsInstallationRouteImport } from './routes/docs/installation'
+import { Route as DocsPresetsFadeRouteImport } from './routes/docs/presets/fade'
 
 const PlaygroundRoute = PlaygroundRouteImport.update({
   id: '/playground',
@@ -40,6 +41,11 @@ const DocsInstallationRoute = DocsInstallationRouteImport.update({
   path: '/installation',
   getParentRoute: () => DocsRoute,
 } as any)
+const DocsPresetsFadeRoute = DocsPresetsFadeRouteImport.update({
+  id: '/presets/fade',
+  path: '/presets/fade',
+  getParentRoute: () => DocsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -47,6 +53,7 @@ export interface FileRoutesByFullPath {
   '/playground': typeof PlaygroundRoute
   '/docs/installation': typeof DocsInstallationRoute
   '/docs/introduction': typeof DocsIntroductionRoute
+  '/docs/presets/fade': typeof DocsPresetsFadeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +61,7 @@ export interface FileRoutesByTo {
   '/playground': typeof PlaygroundRoute
   '/docs/installation': typeof DocsInstallationRoute
   '/docs/introduction': typeof DocsIntroductionRoute
+  '/docs/presets/fade': typeof DocsPresetsFadeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,6 +70,7 @@ export interface FileRoutesById {
   '/playground': typeof PlaygroundRoute
   '/docs/installation': typeof DocsInstallationRoute
   '/docs/introduction': typeof DocsIntroductionRoute
+  '/docs/presets/fade': typeof DocsPresetsFadeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -71,6 +80,7 @@ export interface FileRouteTypes {
     | '/playground'
     | '/docs/installation'
     | '/docs/introduction'
+    | '/docs/presets/fade'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -78,6 +88,7 @@ export interface FileRouteTypes {
     | '/playground'
     | '/docs/installation'
     | '/docs/introduction'
+    | '/docs/presets/fade'
   id:
     | '__root__'
     | '/'
@@ -85,6 +96,7 @@ export interface FileRouteTypes {
     | '/playground'
     | '/docs/installation'
     | '/docs/introduction'
+    | '/docs/presets/fade'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -130,17 +142,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DocsInstallationRouteImport
       parentRoute: typeof DocsRoute
     }
+    '/docs/presets/fade': {
+      id: '/docs/presets/fade'
+      path: '/presets/fade'
+      fullPath: '/docs/presets/fade'
+      preLoaderRoute: typeof DocsPresetsFadeRouteImport
+      parentRoute: typeof DocsRoute
+    }
   }
 }
 
 interface DocsRouteChildren {
   DocsInstallationRoute: typeof DocsInstallationRoute
   DocsIntroductionRoute: typeof DocsIntroductionRoute
+  DocsPresetsFadeRoute: typeof DocsPresetsFadeRoute
 }
 
 const DocsRouteChildren: DocsRouteChildren = {
   DocsInstallationRoute: DocsInstallationRoute,
   DocsIntroductionRoute: DocsIntroductionRoute,
+  DocsPresetsFadeRoute: DocsPresetsFadeRoute,
 }
 
 const DocsRouteWithChildren = DocsRoute._addFileChildren(DocsRouteChildren)

@@ -15,7 +15,7 @@ export interface FadeProps {
 
 export const FadeOptionsSchema = z.object({
   direction: z.enum(["up", "down", "left", "right", "none"]).default("up"),
-  distance: z.number().default(40),
+  distance: z.number().default(60),
   duration: z.number().default(0.5),
   delay: z.number().default(0),
   ease: z.any().optional(),
