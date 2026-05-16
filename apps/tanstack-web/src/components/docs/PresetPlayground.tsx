@@ -181,7 +181,13 @@ import { motion } from "motion/react";`;
                       <span className="text-blue-400">=</span>
                       <span className="text-purple-400">fade</span>
                       (<span className="text-cyan-400">{"{"}</span>
-                      {showDirection && <span className="text-green-400">{direction}</span>}
+                      {showDirection && (
+                        <>
+                          <span className="text-red-400">direction</span>
+                          <span>: </span>
+                          <span className="text-green-400">"{direction}"</span>
+                        </>
+                      )}
                       {(showDirection || currentOption.fadeOptions.blur !== undefined || currentOption.fadeOptions.scale !== undefined) && 
                         (showDirection ? ", " : "")}
                       {currentOption.fadeOptions.blur !== undefined && (
