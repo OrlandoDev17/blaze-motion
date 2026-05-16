@@ -14,7 +14,11 @@ import { Route as DocsRouteImport } from './routes/docs'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DocsIntroductionRouteImport } from './routes/docs/introduction'
 import { Route as DocsInstallationRouteImport } from './routes/docs/installation'
+import { Route as DocsChangelogRouteImport } from './routes/docs/changelog'
+import { Route as DocsPresetsParentVariantsRouteImport } from './routes/docs/presets/parent-variants'
 import { Route as DocsPresetsFadeRouteImport } from './routes/docs/presets/fade'
+import { Route as DocsComponentsTextAnimateRouteImport } from './routes/docs/components/text-animate'
+import { Route as DocsComponentsMarqueeRouteImport } from './routes/docs/components/marquee'
 
 const PlaygroundRoute = PlaygroundRouteImport.update({
   id: '/playground',
@@ -41,9 +45,31 @@ const DocsInstallationRoute = DocsInstallationRouteImport.update({
   path: '/installation',
   getParentRoute: () => DocsRoute,
 } as any)
+const DocsChangelogRoute = DocsChangelogRouteImport.update({
+  id: '/changelog',
+  path: '/changelog',
+  getParentRoute: () => DocsRoute,
+} as any)
+const DocsPresetsParentVariantsRoute =
+  DocsPresetsParentVariantsRouteImport.update({
+    id: '/presets/parent-variants',
+    path: '/presets/parent-variants',
+    getParentRoute: () => DocsRoute,
+  } as any)
 const DocsPresetsFadeRoute = DocsPresetsFadeRouteImport.update({
   id: '/presets/fade',
   path: '/presets/fade',
+  getParentRoute: () => DocsRoute,
+} as any)
+const DocsComponentsTextAnimateRoute =
+  DocsComponentsTextAnimateRouteImport.update({
+    id: '/components/text-animate',
+    path: '/components/text-animate',
+    getParentRoute: () => DocsRoute,
+  } as any)
+const DocsComponentsMarqueeRoute = DocsComponentsMarqueeRouteImport.update({
+  id: '/components/marquee',
+  path: '/components/marquee',
   getParentRoute: () => DocsRoute,
 } as any)
 
@@ -51,26 +77,38 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/docs': typeof DocsRouteWithChildren
   '/playground': typeof PlaygroundRoute
+  '/docs/changelog': typeof DocsChangelogRoute
   '/docs/installation': typeof DocsInstallationRoute
   '/docs/introduction': typeof DocsIntroductionRoute
+  '/docs/components/marquee': typeof DocsComponentsMarqueeRoute
+  '/docs/components/text-animate': typeof DocsComponentsTextAnimateRoute
   '/docs/presets/fade': typeof DocsPresetsFadeRoute
+  '/docs/presets/parent-variants': typeof DocsPresetsParentVariantsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/docs': typeof DocsRouteWithChildren
   '/playground': typeof PlaygroundRoute
+  '/docs/changelog': typeof DocsChangelogRoute
   '/docs/installation': typeof DocsInstallationRoute
   '/docs/introduction': typeof DocsIntroductionRoute
+  '/docs/components/marquee': typeof DocsComponentsMarqueeRoute
+  '/docs/components/text-animate': typeof DocsComponentsTextAnimateRoute
   '/docs/presets/fade': typeof DocsPresetsFadeRoute
+  '/docs/presets/parent-variants': typeof DocsPresetsParentVariantsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/docs': typeof DocsRouteWithChildren
   '/playground': typeof PlaygroundRoute
+  '/docs/changelog': typeof DocsChangelogRoute
   '/docs/installation': typeof DocsInstallationRoute
   '/docs/introduction': typeof DocsIntroductionRoute
+  '/docs/components/marquee': typeof DocsComponentsMarqueeRoute
+  '/docs/components/text-animate': typeof DocsComponentsTextAnimateRoute
   '/docs/presets/fade': typeof DocsPresetsFadeRoute
+  '/docs/presets/parent-variants': typeof DocsPresetsParentVariantsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -78,25 +116,37 @@ export interface FileRouteTypes {
     | '/'
     | '/docs'
     | '/playground'
+    | '/docs/changelog'
     | '/docs/installation'
     | '/docs/introduction'
+    | '/docs/components/marquee'
+    | '/docs/components/text-animate'
     | '/docs/presets/fade'
+    | '/docs/presets/parent-variants'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/docs'
     | '/playground'
+    | '/docs/changelog'
     | '/docs/installation'
     | '/docs/introduction'
+    | '/docs/components/marquee'
+    | '/docs/components/text-animate'
     | '/docs/presets/fade'
+    | '/docs/presets/parent-variants'
   id:
     | '__root__'
     | '/'
     | '/docs'
     | '/playground'
+    | '/docs/changelog'
     | '/docs/installation'
     | '/docs/introduction'
+    | '/docs/components/marquee'
+    | '/docs/components/text-animate'
     | '/docs/presets/fade'
+    | '/docs/presets/parent-variants'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -142,6 +192,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DocsInstallationRouteImport
       parentRoute: typeof DocsRoute
     }
+    '/docs/changelog': {
+      id: '/docs/changelog'
+      path: '/changelog'
+      fullPath: '/docs/changelog'
+      preLoaderRoute: typeof DocsChangelogRouteImport
+      parentRoute: typeof DocsRoute
+    }
+    '/docs/presets/parent-variants': {
+      id: '/docs/presets/parent-variants'
+      path: '/presets/parent-variants'
+      fullPath: '/docs/presets/parent-variants'
+      preLoaderRoute: typeof DocsPresetsParentVariantsRouteImport
+      parentRoute: typeof DocsRoute
+    }
     '/docs/presets/fade': {
       id: '/docs/presets/fade'
       path: '/presets/fade'
@@ -149,19 +213,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DocsPresetsFadeRouteImport
       parentRoute: typeof DocsRoute
     }
+    '/docs/components/text-animate': {
+      id: '/docs/components/text-animate'
+      path: '/components/text-animate'
+      fullPath: '/docs/components/text-animate'
+      preLoaderRoute: typeof DocsComponentsTextAnimateRouteImport
+      parentRoute: typeof DocsRoute
+    }
+    '/docs/components/marquee': {
+      id: '/docs/components/marquee'
+      path: '/components/marquee'
+      fullPath: '/docs/components/marquee'
+      preLoaderRoute: typeof DocsComponentsMarqueeRouteImport
+      parentRoute: typeof DocsRoute
+    }
   }
 }
 
 interface DocsRouteChildren {
+  DocsChangelogRoute: typeof DocsChangelogRoute
   DocsInstallationRoute: typeof DocsInstallationRoute
   DocsIntroductionRoute: typeof DocsIntroductionRoute
+  DocsComponentsMarqueeRoute: typeof DocsComponentsMarqueeRoute
+  DocsComponentsTextAnimateRoute: typeof DocsComponentsTextAnimateRoute
   DocsPresetsFadeRoute: typeof DocsPresetsFadeRoute
+  DocsPresetsParentVariantsRoute: typeof DocsPresetsParentVariantsRoute
 }
 
 const DocsRouteChildren: DocsRouteChildren = {
+  DocsChangelogRoute: DocsChangelogRoute,
   DocsInstallationRoute: DocsInstallationRoute,
   DocsIntroductionRoute: DocsIntroductionRoute,
+  DocsComponentsMarqueeRoute: DocsComponentsMarqueeRoute,
+  DocsComponentsTextAnimateRoute: DocsComponentsTextAnimateRoute,
   DocsPresetsFadeRoute: DocsPresetsFadeRoute,
+  DocsPresetsParentVariantsRoute: DocsPresetsParentVariantsRoute,
 }
 
 const DocsRouteWithChildren = DocsRoute._addFileChildren(DocsRouteChildren)
