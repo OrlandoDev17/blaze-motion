@@ -31,16 +31,16 @@ const FOOTER_LINKS: FooterLinksProps[] = [
         label: "Github",
         href: "https://github.com/OrlandoDev17/blaze-motion",
       },
-      { id: "docs", label: "Docs", href: "/docs" },
+      { id: "docs", label: "Docs", href: "/docs/introduction" },
     ],
   },
   {
     id: "product",
     title: "Producto",
     links: [
-      { id: "presets", label: "Presets", href: "/presets" },
-      { id: "components", label: "Components", href: "/components" },
-      { id: "changelog", label: "Changelog", href: "/changelog" },
+      { id: "presets", label: "Presets", href: "/docs/presets/fade" },
+      { id: "components", label: "Components", href: "/docs/components/text-animate" },
+      { id: "changelog", label: "Changelog", href: "/docs/changelog" },
     ],
   },
   {

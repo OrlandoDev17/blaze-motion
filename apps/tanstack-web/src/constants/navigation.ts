@@ -18,14 +18,14 @@ const NAV_LINKS: NavLink[] = [
     href: "/docs/introduction",
   },
   {
-    id: "components",
-    label: "Componentes",
-    href: "/docs/components",
-  },
-  {
     id: "presets",
     label: "Presets",
-    href: "/docs/presets",
+    href: "/docs/presets/fade",
+  },
+  {
+    id: "components",
+    label: "Componentes",
+    href: "/docs/components/text-animate",
   },
   {
     id: "playground",
